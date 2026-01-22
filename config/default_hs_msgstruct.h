@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -26,8 +25,8 @@
  *   Constants and enumerated types related to these message structures
  *   are defined in hs_msgdefs.h.
  */
-#ifndef HS_MSGSTRUCT_H
-#define HS_MSGSTRUCT_H
+#ifndef DEFAULT_HS_MSGSTRUCT_H
+#define DEFAULT_HS_MSGSTRUCT_H
 
 /************************************************************************
  * Includes
@@ -35,12 +34,6 @@
 #include "hs_msgdefs.h"
 #include "hs_mission_cfg.h"
 #include "cfe_msg_hdr.h"
-
-/************************************************************************
- * Macro Definitions
- ************************************************************************/
-
-#define HS_BITS_PER_APPMON_ENABLE 32 /**< \brief HS Bits per AppMon Enable entry */
 
 /************************************************************************
  * Type Definitions

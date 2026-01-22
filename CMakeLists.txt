@@ -8,7 +8,7 @@ set(APP_SRC_FILES
   fsw/src/hs_cmds.c
 )
 
-if (CFE_EDS_ENABLED_BUILD)
+if (CFE_EDS_ENABLED)
   list(APPEND APP_SRC_FILES
     fsw/src/hs_eds_dispatch.c
   )

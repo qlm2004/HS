@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -41,13 +40,13 @@ bool HS_AMTActionIsValid(uint16 ActionType)
 {
     bool IsValid = true;
 
-    if (ActionType < HS_AMT_ACT_NOACT)
+    if (ActionType < HS_AMTActType_NOACT)
     {
         IsValid = false;
     }
-    else if (ActionType > (HS_AMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES))
+    else if (ActionType > (HS_AMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES))
     {
-        /* HS allows for HS_AMT_ACT_LAST_NONMSG actions by default and
+        /* HS allows for HS_AMTActType_LAST_NONMSG actions by default and
            HS_MAX_MSG_ACT_TYPES message actions defined in the Message
            Action Table. */
         IsValid = false;
@@ -65,13 +64,13 @@ bool HS_EMTActionIsValid(uint16 ActionType)
 {
     bool IsValid = true;
 
-    if (ActionType < HS_EMT_ACT_NOACT)
+    if (ActionType < HS_EMTActType_NOACT)
     {
         IsValid = false;
     }
-    else if (ActionType > (HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES))
+    else if (ActionType > (HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES))
     {
-        /* HS allows for HS_EMT_ACT_LAST_NONMSG actions by default and
+        /* HS allows for HS_EMTActType_LAST_NONMSG actions by default and
            HS_MAX_MSG_ACT_TYPES message actions defined in the Message
            Action Table. */
         IsValid = false;

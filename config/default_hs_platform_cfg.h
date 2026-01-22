@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -33,8 +32,8 @@
  * either by overriding this header or by generating definitions from a command/data
  * dictionary tool.
  */
-#ifndef HS_PLATFORM_CFG_H
-#define HS_PLATFORM_CFG_H
+#ifndef DEFAULT_HS_PLATFORM_CFG_H
+#define DEFAULT_HS_PLATFORM_CFG_H
 
 #include "hs_mission_cfg.h"
 #include "hs_internal_cfg.h"

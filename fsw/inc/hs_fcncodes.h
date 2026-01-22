@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -28,6 +27,8 @@
  */
 #ifndef HS_FCNCODES_H
 #define HS_FCNCODES_H
+
+#include "hs_fcncode_values.h"
 
 /************************************************************************
  * Macro Definitions
@@ -67,7 +68,7 @@
  *
  *  \sa #HS_RESET_CC
  */
-#define HS_NOOP_CC 0
+#define HS_NOOP_CC HS_CCVAL(NOOP)
 
 /**
  * \brief Reset Counters
@@ -98,7 +99,7 @@
  *
  *  \sa #HS_NOOP_CC
  */
-#define HS_RESET_CC 1
+#define HS_RESET_CC HS_CCVAL(RESET)
 
 /**
  * \brief Enable Applications Monitor
@@ -130,7 +131,7 @@
  *
  *  \sa #HS_DISABLE_APP_MON_CC
  */
-#define HS_ENABLE_APP_MON_CC 2
+#define HS_ENABLE_APP_MON_CC HS_CCVAL(ENABLE_APP_MON)
 
 /**
  * \brief Disable Applications Monitor
@@ -162,7 +163,7 @@
  *
  *  \sa #HS_ENABLE_APP_MON_CC
  */
-#define HS_DISABLE_APP_MON_CC 3
+#define HS_DISABLE_APP_MON_CC HS_CCVAL(DISABLE_APP_MON)
 
 /**
  * \brief Enable Events Monitor
@@ -194,7 +195,7 @@
  *
  *  \sa #HS_DISABLE_EVENT_MON_CC
  */
-#define HS_ENABLE_EVENT_MON_CC 4
+#define HS_ENABLE_EVENT_MON_CC HS_CCVAL(ENABLE_EVENT_MON)
 
 /**
  * \brief Disable Events Monitor
@@ -226,7 +227,7 @@
  *
  *  \sa #HS_ENABLE_EVENT_MON_CC
  */
-#define HS_DISABLE_EVENT_MON_CC 5
+#define HS_DISABLE_EVENT_MON_CC HS_CCVAL(DISABLE_EVENT_MON)
 
 /**
  * \brief Enable Aliveness Indicator
@@ -258,7 +259,7 @@
  *
  *  \sa #HS_DISABLE_ALIVENESS_CC
  */
-#define HS_ENABLE_ALIVENESS_CC 6
+#define HS_ENABLE_ALIVENESS_CC HS_CCVAL(ENABLE_ALIVENESS)
 
 /**
  * \brief Disable Aliveness Indicator
@@ -290,7 +291,7 @@
  *
  *  \sa #HS_ENABLE_ALIVENESS_CC
  */
-#define HS_DISABLE_ALIVENESS_CC 7
+#define HS_DISABLE_ALIVENESS_CC HS_CCVAL(DISABLE_ALIVENESS)
 
 /**
  * \brief Reset Processor Resets Performed Count
@@ -322,7 +323,7 @@
  *
  *  \sa #HS_SET_MAX_RESETS_CC
  */
-#define HS_RESET_RESETS_PERFORMED_CC 8
+#define HS_RESET_RESETS_PERFORMED_CC HS_CCVAL(RESET_RESETS_PERFORMED)
 
 /**
  * \brief Set Max Processor Resets Performed Count
@@ -354,7 +355,7 @@
  *
  *  \sa #HS_RESET_RESETS_PERFORMED_CC
  */
-#define HS_SET_MAX_RESETS_CC 9
+#define HS_SET_MAX_RESETS_CC HS_CCVAL(SET_MAX_RESETS)
 
 /**
  * \brief Enable CPU Hogging Indicator
@@ -386,7 +387,7 @@
  *
  *  \sa #HS_DISABLE_CPU_HOG_CC
  */
-#define HS_ENABLE_CPU_HOG_CC 10
+#define HS_ENABLE_CPU_HOG_CC HS_CCVAL(ENABLE_CPU_HOG)
 
 /**
  * \brief Disable CPU Hogging Indicator
@@ -418,7 +419,7 @@
  *
  *  \sa #HS_ENABLE_CPU_HOG_CC
  */
-#define HS_DISABLE_CPU_HOG_CC 11
+#define HS_DISABLE_CPU_HOG_CC HS_CCVAL(DISABLE_CPU_HOG)
 
 /**\}*/
 

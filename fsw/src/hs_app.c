@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -86,7 +85,7 @@ void HS_AppMain(void)
         /*
         ** Subscribe to Event Messages
         */
-        if (HS_AppData.CurrentEventMonState == HS_STATE_ENABLED)
+        if (HS_AppData.CurrentEventMonState == HS_State_ENABLED)
         {
             Status = CFE_SB_SubscribeEx(CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID), HS_AppData.EventPipe,
                                         CFE_SB_DEFAULT_QOS, HS_EVENT_PIPE_DEPTH);
@@ -207,7 +206,7 @@ CFE_Status_t HS_AppInit(void)
     ** Initialize operating data to default states...
     */
     memset(&HS_AppData, 0, sizeof(HS_AppData));
-    HS_AppData.ServiceWatchdogFlag = HS_STATE_ENABLED;
+    HS_AppData.ServiceWatchdogFlag = HS_State_ENABLED;
     HS_AppData.RunStatus           = CFE_ES_RunStatus_APP_RUN;
 
     HS_AppData.CurrentAppMonState    = HS_APPMON_DEFAULT_STATE;
@@ -215,11 +214,11 @@ CFE_Status_t HS_AppInit(void)
     HS_AppData.CurrentAlivenessState = HS_ALIVENESS_DEFAULT_STATE;
     HS_AppData.CurrentCPUHogState    = HS_CPUHOG_DEFAULT_STATE;
 
-    HS_AppData.ExeCountState  = HS_STATE_ENABLED;
-    HS_AppData.MsgActsState   = HS_STATE_ENABLED;
-    HS_AppData.AppMonLoaded   = HS_STATE_ENABLED;
-    HS_AppData.EventMonLoaded = HS_STATE_ENABLED;
-    HS_AppData.CDSState       = HS_STATE_ENABLED;
+    HS_AppData.ExeCountState  = HS_State_ENABLED;
+    HS_AppData.MsgActsState   = HS_State_ENABLED;
+    HS_AppData.AppMonLoaded   = HS_State_ENABLED;
+    HS_AppData.EventMonLoaded = HS_State_ENABLED;
+    HS_AppData.CDSState       = HS_State_ENABLED;
 
     HS_AppData.MaxCPUHoggingTime = HS_UTIL_HOGGING_TIMEOUT;
 
@@ -290,7 +289,7 @@ CFE_Status_t HS_AppInit(void)
         /*
         ** Disable saving to CDS
         */
-        HS_AppData.CDSState = HS_STATE_DISABLED;
+        HS_AppData.CDSState = HS_State_DISABLED;
 
         /*
         ** Initialize values anyway (they will not be saved)
@@ -475,7 +474,7 @@ CFE_Status_t HS_TblInit(void)
     {
         CFE_EVS_SendEvent(HS_XCT_LD_ERR_EID, CFE_EVS_EventType_ERROR, "Error Loading ExeCount Table,RC=0x%08X",
                           (unsigned int)Status);
-        HS_AppData.ExeCountState = HS_STATE_DISABLED;
+        HS_AppData.ExeCountState = HS_State_DISABLED;
         for (TableIndex = 0; TableIndex < HS_MAX_EXEC_CNT_SLOTS; TableIndex++)
         {
             /* HS 8005.1 Report 0xFFFFFFFF for all entries */
@@ -489,10 +488,10 @@ CFE_Status_t HS_TblInit(void)
     {
         CFE_EVS_SendEvent(HS_AMT_LD_ERR_EID, CFE_EVS_EventType_ERROR, "Error Loading AppMon Table,RC=0x%08X",
                           (unsigned int)Status);
-        HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
+        HS_AppData.CurrentAppMonState = HS_State_DISABLED;
         CFE_EVS_SendEvent(HS_DISABLE_APPMON_ERR_EID, CFE_EVS_EventType_ERROR,
                           "Application Monitoring Disabled due to Table Load Failure");
-        HS_AppData.AppMonLoaded = HS_STATE_DISABLED;
+        HS_AppData.AppMonLoaded = HS_State_DISABLED;
     }
 
     /* Load the HS Events Monitor Table */
@@ -501,10 +500,10 @@ CFE_Status_t HS_TblInit(void)
     {
         CFE_EVS_SendEvent(HS_EMT_LD_ERR_EID, CFE_EVS_EventType_ERROR, "Error Loading EventMon Table,RC=0x%08X",
                           (unsigned int)Status);
-        HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+        HS_AppData.CurrentEventMonState = HS_State_DISABLED;
         CFE_EVS_SendEvent(HS_DISABLE_EVENTMON_ERR_EID, CFE_EVS_EventType_ERROR,
                           "Event Monitoring Disabled due to Table Load Failure");
-        HS_AppData.EventMonLoaded = HS_STATE_DISABLED;
+        HS_AppData.EventMonLoaded = HS_State_DISABLED;
     }
 
     /* Load the HS Message Actions Table */
@@ -513,7 +512,7 @@ CFE_Status_t HS_TblInit(void)
     {
         CFE_EVS_SendEvent(HS_MAT_LD_ERR_EID, CFE_EVS_EventType_ERROR, "Error Loading MsgActs Table,RC=0x%08X",
                           (unsigned int)Status);
-        HS_AppData.MsgActsState = HS_STATE_DISABLED;
+        HS_AppData.MsgActsState = HS_State_DISABLED;
     }
 
     /*
@@ -561,7 +560,7 @@ CFE_Status_t HS_ProcessMain(void)
     /*
     ** Monitor Applications
     */
-    if (HS_AppData.CurrentAppMonState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentAppMonState == HS_State_ENABLED)
     {
         HS_MonitorApplications();
     }
@@ -569,7 +568,7 @@ CFE_Status_t HS_ProcessMain(void)
     /*
     ** Output Aliveness
     */
-    if (HS_AppData.CurrentAlivenessState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentAlivenessState == HS_State_ENABLED)
     {
         HS_AppData.AlivenessCounter++;
 
@@ -588,7 +587,7 @@ CFE_Status_t HS_ProcessMain(void)
     /*
     ** Service the Watchdog
     */
-    if (HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED)
+    if (HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED)
     {
         CFE_PSP_WatchdogService();
     }
@@ -609,7 +608,7 @@ CFE_Status_t HS_ProcessCommands(void)
     /*
     ** Event Message Pipe (done first so EventMon does not get enabled without table checking)
     */
-    if (HS_AppData.CurrentEventMonState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentEventMonState == HS_State_ENABLED)
     {
         while (Status == CFE_SUCCESS)
         {

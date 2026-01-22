@@ -255,13 +255,8 @@
 
   <H2> CPU Utilization Monitoring and Hogging Detection </H2>
 
-  The HS Application creates an Idle Child Task at a low priority, that is used to determine the portion
-  of CPU utilization not being used by other applications. The Idle Child Task continually increments a
-  counter while running; and this counter is recorded at 1 Hz by a TIME 1 Hz callback function. When the
-  HS application runs each cycle, it will compute the non-Idle Child Task utilization that occurred during
-  the previous cycle and report the average utilization, peak utilization, and determine if the processor
-  is being hogged. The frequency at which the count is recorded and at which the HS application computes
-  utilization can be configured to be other than 1 Hz or 1 cycle if necessary.
+  The HS Application obtains average CPU utilization through calls to the PSP's iodriver. This mechanism is
+  used to report the average utilization, peak utilization, and determine if the processor is being hogged.
 
   If the utilization is in excess of a configurable amount for a configurable period of time, then the CPU
   Hogging event message will be sent. This message can be used to by HS Event Monitoring to perform whatever
@@ -379,11 +374,11 @@
          must not be incremented before the defined action is taken.
     <LI> The Action Type is the action to take:
     <UL>
-        <LI> #HS_AMT_ACT_NOACT for a disabled entry.
-        <LI> #HS_AMT_ACT_PROC_RESET for an entry that causes a processor reset.
-        <LI> #HS_AMT_ACT_APP_RESTART for an entry that restarts the named application.
-        <LI> #HS_AMT_ACT_EVENT for an entry that only generates an event message.
-        <LI> HS_AMT_ACT_MSG(num) for an entry that generates a message action, where 'num' is
+        <LI> #HS_AMTActType_NOACT for a disabled entry.
+        <LI> #HS_AMTActType_PROC_RESET for an entry that causes a processor reset.
+        <LI> #HS_AMTActType_APP_RESTART for an entry that restarts the named application.
+        <LI> #HS_AMTActType_EVENT for an entry that only generates an event message.
+        <LI> HS_AMTActType_MSG(num) for an entry that generates a message action, where 'num' is
              the index into the Message Actions Table.
     </UL>
   </UL>
@@ -405,11 +400,11 @@
     <LI> The Event ID is the number of the event being monitored for.
     <LI> The Action Type is the action to take:
     <UL>
-        <LI> #HS_EMT_ACT_NOACT for a disabled entry.
-        <LI> #HS_EMT_ACT_PROC_RESET for an entry that causes a processor reset.
-        <LI> #HS_EMT_ACT_APP_RESTART for an entry that restarts the named application.
-        <LI> #HS_EMT_ACT_APP_DELETE for an entry that deletes the named application.
-        <LI> HS_EMT_ACT_MSG(num) for an entry that generates a message action, where 'num' is the
+        <LI> #HS_EMTActType_NOACT for a disabled entry.
+        <LI> #HS_EMTActType_PROC_RESET for an entry that causes a processor reset.
+        <LI> #HS_EMTActType_APP_RESTART for an entry that restarts the named application.
+        <LI> #HS_EMTActType_APP_DELETE for an entry that deletes the named application.
+        <LI> HS_EMTActType_MSG(num) for an entry that generates a message action, where 'num' is the
              index into the Message Actions Table.
     </UL>
   </UL>
@@ -432,9 +427,9 @@
          to be sent. Keep byte-swapping issues in mind when populating this field.
     <LI> The Enable State determines whether the message action in that record can be sent:
     <UL>
-        <LI> #HS_MAT_STATE_DISABLED for a disabled entry.
-        <LI> #HS_MAT_STATE_ENABLED for an enabled entry which will generate an event when sent.
-        <LI> #HS_MAT_STATE_NOEVENT for an enabled entry which will not generate an event when sent.
+        <LI> #HS_MATState_DISABLED for a disabled entry.
+        <LI> #HS_MATState_ENABLED for an enabled entry which will generate an event when sent.
+        <LI> #HS_MATState_NOEVENT for an enabled entry which will not generate an event when sent.
     </UL>
   </UL>
 
@@ -454,11 +449,11 @@
          in the table are no longer than the maximum length.
     <LI> The Resource Type is the type of resource being monitored:
     <UL>
-      <LI> #HS_XCT_TYPE_NOTYPE for a disabled entry.
-      <LI> #HS_XCT_TYPE_APP_MAIN for an Application Main Task.
-      <LI> #HS_XCT_TYPE_APP_CHILD for a Child Task.
-      <LI> #HS_XCT_TYPE_ISR for an ISR counter.
-      <LI> #HS_XCT_TYPE_DEVICE for a Device Driver counter.
+      <LI> #HS_XCTResType_NOTYPE for a disabled entry.
+      <LI> #HS_XCTResType_APP_MAIN for an Application Main Task.
+      <LI> #HS_XCTResType_APP_CHILD for a Child Task.
+      <LI> #HS_XCTResType_ISR for an ISR counter.
+      <LI> #HS_XCTResType_DEVICE for a Device Driver counter.
     </UL>
   </UL>
 

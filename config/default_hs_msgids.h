@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -21,11 +20,11 @@
  * @file
  *   CFS Health and Safety (HS) Application Message IDs
  */
-#ifndef HS_MSGIDS_H
-#define HS_MSGIDS_H
+#ifndef DEFAULT_HS_MSGIDS_H
+#define DEFAULT_HS_MSGIDS_H
 
 #include "cfe_core_api_base_msgids.h"
-#include "hs_topicids.h"
+#include "hs_msgid_values.h"
 
 /**
  * \defgroup cfshscmdmid CFS Health and Safety Command Message IDs
@@ -33,13 +32,13 @@
  */
 
 /** \brief Msg ID for cmds to HS                */
-#define HS_CMD_MID CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_HS_CMD_TOPICID)
+#define HS_CMD_MID CFE_PLATFORM_HS_CMD_MIDVAL(CMD)
 
 /** \brief Msg ID to request HS housekeeping    */
-#define HS_SEND_HK_MID CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_HS_SEND_HK_TOPICID)
+#define HS_SEND_HK_MID CFE_PLATFORM_HS_CMD_MIDVAL(SEND_HK)
 
 /** \brief Msg ID to wake up HS                 */
-#define HS_WAKEUP_MID CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_HS_WAKEUP_TOPICID)
+#define HS_WAKEUP_MID CFE_PLATFORM_HS_CMD_MIDVAL(WAKEUP)
 
 /**\}*/
 
@@ -49,7 +48,7 @@
  */
 
 /** \brief HS Housekeeping Telemetry            */
-#define HS_HK_TLM_MID CFE_PLATFORM_TLM_TOPICID_TO_MIDV(CFE_MISSION_HS_HK_TLM_TOPICID)
+#define HS_HK_TLM_MID CFE_PLATFORM_HS_TLM_MIDVAL(HK_TLM)
 
 /**\}*/
 

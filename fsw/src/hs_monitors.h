@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -92,8 +91,8 @@ void HS_MonitorUtilization(void);
  *
  *  \return Table validation status
  *  \retval #CFE_SUCCESS       \copydoc CFE_SUCCESS
- *  \retval #HS_AMTVAL_ERR_ACT \copydoc HS_AMTVAL_ERR_ACT
- *  \retval #HS_AMTVAL_ERR_NUL \copydoc HS_AMTVAL_ERR_NUL
+ *  \retval #HS_AMTVal_ERR_ACT \copydoc HS_AMTVal_ERR_ACT
+ *  \retval #HS_AMTVal_ERR_NUL \copydoc HS_AMTVal_ERR_NUL
  *
  *  \sa #HS_ValidateEMTable, #HS_ValidateXCTable, #HS_ValidateMATable
  */
@@ -113,8 +112,8 @@ int32 HS_ValidateAMTable(void *TableData);
  *
  *  \return Table validation status
  *  \retval #CFE_SUCCESS       \copydoc CFE_SUCCESS
- *  \retval #HS_EMTVAL_ERR_ACT \copydoc HS_EMTVAL_ERR_ACT
- *  \retval #HS_EMTVAL_ERR_NUL \copydoc HS_EMTVAL_ERR_NUL
+ *  \retval #HS_EMTVal_ERR_ACT \copydoc HS_EMTVal_ERR_ACT
+ *  \retval #HS_EMTVal_ERR_NUL \copydoc HS_EMTVal_ERR_NUL
  *
  *  \sa #HS_ValidateAMTable, #HS_ValidateXCTable, #HS_ValidateMATable
  */
@@ -134,8 +133,8 @@ int32 HS_ValidateEMTable(void *TableData);
  *
  *  \return Table validation status
  *  \retval #CFE_SUCCESS        \copydoc CFE_SUCCESS
- *  \retval #HS_XCTVAL_ERR_TYPE \copydoc HS_XCTVAL_ERR_TYPE
- *  \retval #HS_XCTVAL_ERR_NUL  \copydoc HS_XCTVAL_ERR_NUL
+ *  \retval #HS_XCTVal_ERR_TYPE \copydoc HS_XCTVal_ERR_TYPE
+ *  \retval #HS_XCTVal_ERR_NUL  \copydoc HS_XCTVal_ERR_NUL
  *
  *  \sa #HS_ValidateAMTable, #HS_ValidateEMTable, #HS_ValidateMATable
  */
@@ -155,9 +154,9 @@ int32 HS_ValidateXCTable(void *TableData);
  *
  *  \return Table validation status
  *  \retval #CFE_SUCCESS       \copydoc CFE_SUCCESS
- *  \retval #HS_MATVAL_ERR_ID  \copydoc HS_MATVAL_ERR_ID
- *  \retval #HS_MATVAL_ERR_LEN \copydoc HS_MATVAL_ERR_LEN
- *  \retval #HS_MATVAL_ERR_ENA \copydoc HS_MATVAL_ERR_ENA
+ *  \retval #HS_MATVal_ERR_ID  \copydoc HS_MATVal_ERR_ID
+ *  \retval #HS_MATVal_ERR_LEN \copydoc HS_MATVal_ERR_LEN
+ *  \retval #HS_MATVal_ERR_ENA \copydoc HS_MATVal_ERR_ENA
  *
  *  \sa #HS_ValidateAMTable, #HS_ValidateEMTable, #HS_ValidateXCTable
  */

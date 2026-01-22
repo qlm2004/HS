@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -67,35 +66,35 @@ HS_MatTableEntry_t HS_MsgActs_Tbl[HS_MAX_MSG_ACT_TYPES] = {
     /*          EnableState               Cooldown   Message */
 
     /*   0 */
-    {.EnableState = HS_MAT_STATE_ENABLED,
+    {.EnableState = HS_MATState_ENABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}},
     /*   1 */
-    {.EnableState = HS_MAT_STATE_ENABLED,
+    {.EnableState = HS_MATState_ENABLED,
      .Cooldown    = 10,
      .HsMsg.cmd2  = {CFE_MSG_CMD_HDR_INIT(CFE_ES_CMD_MID, HS_MEMBER_SIZE(cmd2), CFE_ES_NOOP_CC, CFE_ES_NOOP_CKSUM)}},
     /*   2 */
-    {.EnableState = HS_MAT_STATE_DISABLED,
+    {.EnableState = HS_MATState_DISABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}},
     /*   3 */
-    {.EnableState = HS_MAT_STATE_DISABLED,
+    {.EnableState = HS_MATState_DISABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}},
     /*   4 */
-    {.EnableState = HS_MAT_STATE_DISABLED,
+    {.EnableState = HS_MATState_DISABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}},
     /*   5 */
-    {.EnableState = HS_MAT_STATE_DISABLED,
+    {.EnableState = HS_MATState_DISABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}},
     /*   6 */
-    {.EnableState = HS_MAT_STATE_DISABLED,
+    {.EnableState = HS_MATState_DISABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}},
     /*   7 */
-    {.EnableState = HS_MAT_STATE_DISABLED,
+    {.EnableState = HS_MATState_DISABLED,
      .Cooldown    = 10,
      .HsMsg.cmd1  = {CFE_MSG_CMD_HDR_INIT(CFE_TBL_CMD_MID, HS_MEMBER_SIZE(cmd1), CFE_TBL_NOOP_CC, CFE_TBL_NOOP_CKSUM)}}
 

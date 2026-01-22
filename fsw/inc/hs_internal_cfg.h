@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -19,12 +18,7 @@
 
 /**
  * @file
- *   CFS Health and Safety (HS) Application Private Config Definitions
- *
- * This provides default values for configurable items that are internal
- * to this module and do NOT affect the interface(s) of this module.  Changes
- * to items in this file only affect the local module and will be transparent
- * to external entities that are using the public interface(s).
+ *   CFS Health and Safety (HS) Application Platform Configuration Header File
  *
  * @note This file may be overridden/superceded by mission-provided definitions
  * either by overriding this header or by generating definitions from a command/data
@@ -32,6 +26,9 @@
  */
 #ifndef HS_INTERNAL_CFG_H
 #define HS_INTERNAL_CFG_H
+
+#include "hs_mission_cfg.h"
+#include "hs_internal_cfg_values.h"
 
 /**
  * \defgroup cfshsplatformcfg CFS Health and Safety Platform Configuration
@@ -50,7 +47,8 @@
  *
  *       This parameter must be greater than 0.
  */
-#define HS_WATCHDOG_TIMEOUT_VALUE 10000
+ #define HS_WATCHDOG_TIMEOUT_VALUE         HS_INTERNAL_CFGVAL(WATCHDOG_TIMEOUT_VALUE)
+ #define DEFAULT_HS_WATCHDOG_TIMEOUT_VALUE 10000
 
 /**
  *  \brief Time to wait after performing processing (in milliseconds)
@@ -65,7 +63,8 @@
  *       This parameter can't be larger than an unsigned 32 bit
  *       integer (4294967295).
  */
-#define HS_POST_PROCESSING_DELAY 0
+ #define HS_POST_PROCESSING_DELAY         HS_INTERNAL_CFGVAL(POST_PROCESSING_DELAY)
+ #define DEFAULT_HS_POST_PROCESSING_DELAY 0
 
 /**
  *  \brief Wakeup Message Software Bus Timeout
@@ -83,7 +82,8 @@
  *       (#HS_WATCHDOG_TIMEOUT_VALUE * 1000) - HS runtime in ms
  *       otherwise HS may not be able to service the watchdog in time.
  */
-#define HS_WAKEUP_TIMEOUT 1200
+ #define HS_WAKEUP_TIMEOUT         HS_INTERNAL_CFGVAL(WAKEUP_TIMEOUT)
+ #define DEFAULT_HS_WAKEUP_TIMEOUT 1200
 
 /**
  * \brief CPU aliveness output string
@@ -96,7 +96,8 @@
  *       None.
  *
  */
-#define HS_CPU_ALIVE_STRING "."
+ #define HS_CPU_ALIVE_STRING         HS_INTERNAL_CFGVAL(CPU_ALIVE_STRING)
+ #define DEFAULT_HS_CPU_ALIVE_STRING "."
 
 /**
  * \brief CPU aliveness output period
@@ -110,7 +111,8 @@
  *       integer (4294967295).
  *
  */
-#define HS_CPU_ALIVE_PERIOD 5
+ #define HS_CPU_ALIVE_PERIOD         HS_INTERNAL_CFGVAL(CPU_ALIVE_PERIOD)
+ #define DEFAULT_HS_CPU_ALIVE_PERIOD 5
 
 /**
  * \brief Max Number of Processor Resets that may be performed by HS
@@ -130,7 +132,8 @@
  *       actions to the value set here.
  *
  */
-#define HS_MAX_RESTART_ACTIONS 3
+ #define HS_MAX_RESTART_ACTIONS         HS_INTERNAL_CFGVAL(MAX_RESTART_ACTIONS)
+ #define DEFAULT_HS_MAX_RESTART_ACTIONS 3
 
 /**
  * \brief Software bus command pipe depth
@@ -142,7 +145,8 @@
  *  \par Limits:
  *       This parameter must be greater than 0.
  */
-#define HS_CMD_PIPE_DEPTH 12
+ #define HS_CMD_PIPE_DEPTH         HS_INTERNAL_CFGVAL(CMD_PIPE_DEPTH)
+ #define DEFAULT_HS_CMD_PIPE_DEPTH 12
 
 /**
  * \brief Software bus event pipe depth
@@ -156,7 +160,8 @@
  *  \par Limits:
  *       This parameter must be greater than 0.
  */
-#define HS_EVENT_PIPE_DEPTH 32
+ #define HS_EVENT_PIPE_DEPTH         HS_INTERNAL_CFGVAL(EVENT_PIPE_DEPTH)
+ #define DEFAULT_HS_EVENT_PIPE_DEPTH 32
 
 /**
  * \brief Software bus wakeup pipe depth
@@ -168,7 +173,8 @@
  *  \par Limits:
  *       This parameter must be greater than 0.
  */
-#define HS_WAKEUP_PIPE_DEPTH 1
+ #define HS_WAKEUP_PIPE_DEPTH         HS_INTERNAL_CFGVAL(WAKEUP_PIPE_DEPTH)
+ #define DEFAULT_HS_WAKEUP_PIPE_DEPTH 1
 
 /**
  *  \brief Time to wait before a processor reset (in milliseconds)
@@ -181,7 +187,8 @@
  *       This parameter can't be larger than an unsigned 32 bit
  *       integer (4294967295).
  */
-#define HS_RESET_TASK_DELAY 50
+ #define HS_RESET_TASK_DELAY         HS_INTERNAL_CFGVAL(RESET_TASK_DELAY)
+ #define DEFAULT_HS_RESET_TASK_DELAY 50
 
 /**
  *  \brief Time to wait for all apps to be started (in milliseconds)
@@ -200,7 +207,8 @@
  *       This should be greater than or equal to the Startup Sync timeout for
  *       any application in the Application Monitor Table.
  */
-#define HS_STARTUP_SYNC_TIMEOUT 65000
+ #define HS_STARTUP_SYNC_TIMEOUT         HS_INTERNAL_CFGVAL(STARTUP_SYNC_TIMEOUT)
+ #define DEFAULT_HS_STARTUP_SYNC_TIMEOUT 65000
 
 /**
  * \brief Default State of the Application Monitor
@@ -210,9 +218,10 @@
  *       application starts.
  *
  *  \par Limits:
- *       Must be HS_STATE_ENABLED or HS_STATE_DISABLED
+ *       Must be HS_State_ENABLED or HS_State_DISABLED
  */
-#define HS_APPMON_DEFAULT_STATE HS_STATE_ENABLED
+ #define HS_APPMON_DEFAULT_STATE         HS_INTERNAL_CFGVAL(APPMON_DEFAULT_STATE)
+ #define DEFAULT_HS_APPMON_DEFAULT_STATE HS_State_ENABLED
 
 /**
  * \brief Default State of the Event Monitor
@@ -222,9 +231,10 @@
  *       application starts.
  *
  *  \par Limits:
- *       Must be HS_STATE_ENABLED or HS_STATE_DISABLED
+ *       Must be HS_State_ENABLED or HS_State_DISABLED
  */
-#define HS_EVENTMON_DEFAULT_STATE HS_STATE_ENABLED
+ #define HS_EVENTMON_DEFAULT_STATE         HS_INTERNAL_CFGVAL(EVENTMON_DEFAULT_STATE)
+ #define DEFAULT_HS_EVENTMON_DEFAULT_STATE HS_State_DISABLED
 
 /**
  * \brief Default State of the Aliveness Indicator
@@ -234,9 +244,10 @@
  *       starts.
  *
  *  \par Limits:
- *       Must be HS_STATE_ENABLED or HS_STATE_DISABLED
+ *       Must be HS_State_ENABLED or HS_State_DISABLED
  */
-#define HS_ALIVENESS_DEFAULT_STATE HS_STATE_ENABLED
+ #define HS_ALIVENESS_DEFAULT_STATE         HS_INTERNAL_CFGVAL(ALIVENESS_DEFAULT_STATE)
+ #define DEFAULT_HS_ALIVENESS_DEFAULT_STATE HS_State_ENABLED
 
 /**
  * \brief Default State of the CPU Hogging Indicator
@@ -246,9 +257,10 @@
  *       starts.
  *
  *  \par Limits:
- *       Must be HS_STATE_ENABLED or HS_STATE_DISABLED
+ *       Must be HS_State_ENABLED or HS_State_DISABLED
  */
-#define HS_CPUHOG_DEFAULT_STATE HS_STATE_ENABLED
+ #define HS_CPUHOG_DEFAULT_STATE         HS_INTERNAL_CFGVAL(CPUHOG_DEFAULT_STATE)
+ #define DEFAULT_HS_CPUHOG_DEFAULT_STATE HS_State_ENABLED
 
 /**
  * \brief Application Monitor Table (AMT) filename
@@ -261,7 +273,8 @@
  *       This string shouldn't be longer than #OS_MAX_PATH_LEN for the
  *       target platform in question
  */
-#define HS_AMT_FILENAME "/cf/hs_amt.tbl"
+ #define HS_AMT_FILENAME         HS_INTERNAL_CFGVAL(AMT_FILENAME)
+ #define DEFAULT_HS_AMT_FILENAME "/cf/hs_amt.tbl"
 
 /**
  * \brief Event Monitor Table (EMT) filename
@@ -274,7 +287,8 @@
  *       This string shouldn't be longer than #OS_MAX_PATH_LEN for the
  *       target platform in question
  */
-#define HS_EMT_FILENAME "/cf/hs_emt.tbl"
+ #define HS_EMT_FILENAME         HS_INTERNAL_CFGVAL(EMT_FILENAME)
+ #define DEFAULT_HS_EMT_FILENAME "/cf/hs_emt.tbl"
 
 /**
  * \brief Execution Counter Table (XCT) filename
@@ -287,7 +301,8 @@
  *       This string shouldn't be longer than #OS_MAX_PATH_LEN for the
  *       target platform in question
  */
-#define HS_XCT_FILENAME "/cf/hs_xct.tbl"
+ #define HS_XCT_FILENAME         HS_INTERNAL_CFGVAL(XCT_FILENAME)
+ #define DEFAULT_HS_XCT_FILENAME "/cf/hs_xct.tbl"
 
 /**
  * \brief Message Actions Table (MAT) filename
@@ -300,7 +315,8 @@
  *       This string shouldn't be longer than #OS_MAX_PATH_LEN for the
  *       target platform in question
  */
-#define HS_MAT_FILENAME "/cf/hs_mat.tbl"
+ #define HS_MAT_FILENAME         HS_INTERNAL_CFGVAL(MAT_FILENAME)
+ #define DEFAULT_HS_MAT_FILENAME "/cf/hs_mat.tbl"
 
 /**
  * \brief System monitor PSP
@@ -313,7 +329,8 @@
  *  \par Limits:
  *       Must be a name of a module that is implemented by the PSP
  */
-#define HS_SYSTEM_MONITOR_DEVICE "linux_sysmon"
+ #define HS_SYSTEM_MONITOR_DEVICE         HS_INTERNAL_CFGVAL(SYSTEM_MONITOR_DEVICE)
+ #define DEFAULT_HS_SYSTEM_MONITOR_DEVICE "linux_sysmon"
 
 /**
  * \brief CPU Utilization subsystem name
@@ -323,7 +340,8 @@
  *       Reverts to 0 if the name is not found.
  *
  */
-#define HS_SYSTEM_MONITOR_SUBSYSTEM_NAME "aggregate"
+ #define HS_SYSTEM_MONITOR_SUBSYSTEM_NAME         HS_INTERNAL_CFGVAL(SYSTEM_MONITOR_SUBSYSTEM_NAME)
+ #define DEFAULT_HS_SYSTEM_MONITOR_SUBSYSTEM_NAME "aggregate"
 
 /**
  * \brief CPU Utilization subchannel name
@@ -333,7 +351,8 @@
  *       Reverts to 0 if the name is not found.
  *
  */
-#define HS_SYSTEM_MONITOR_SUBCHANNEL_NAME "cpu-load"
+ #define HS_SYSTEM_MONITOR_SUBCHANNEL_NAME         HS_INTERNAL_CFGVAL(SYSTEM_MONITOR_SUBCHANNEL_NAME)
+ #define DEFAULT_HS_SYSTEM_MONITOR_SUBCHANNEL_NAME "cpu-load"
 
 /**
  * \brief CPU Utilization Cycles per Interval
@@ -350,7 +369,8 @@
  *       underlying PSP module, otherwise the same data will be reported.
  *
  */
-#define HS_CPU_UTILIZATION_CYCLES_PER_INTERVAL 30
+ #define HS_CPU_UTILIZATION_CYCLES_PER_INTERVAL         HS_INTERNAL_CFGVAL(CPU_UTILIZATION_CYCLES_PER_INTERVAL)
+ #define DEFAULT_HS_CPU_UTILIZATION_CYCLES_PER_INTERVAL 30
 
 /**
  * \brief CPU Utilization Maximum Range
@@ -363,7 +383,8 @@
  *       This parameter can't be larger than an unsigned 32 bit
  *       integer (4294967295).
  */
-#define HS_CPU_UTILIZATION_MAX 10000
+ #define HS_CPU_UTILIZATION_MAX         HS_INTERNAL_CFGVAL(CPU_UTILIZATION_MAX)
+ #define DEFAULT_HS_CPU_UTILIZATION_MAX 10000
 
 /**
  * \brief CPU Utilization Hogging Utils Per Interval
@@ -375,7 +396,8 @@
  *  \par Limits:
  *       This parameter can't be larger than #HS_CPU_UTILIZATION_MAX.
  */
-#define HS_UTIL_PER_INTERVAL_HOGGING 7500
+ #define HS_UTIL_PER_INTERVAL_HOGGING         HS_INTERNAL_CFGVAL(UTIL_PER_INTERVAL_HOGGING)
+ #define DEFAULT_HS_UTIL_PER_INTERVAL_HOGGING 7500
 
 /**
  * \brief CPU Utilization Hogging Timeout
@@ -388,7 +410,8 @@
  *       This parameter can't be larger than an unsigned 32 bit
  *       integer (4294967295).
  */
-#define HS_UTIL_HOGGING_TIMEOUT 5
+ #define HS_UTIL_HOGGING_TIMEOUT         HS_INTERNAL_CFGVAL(UTIL_HOGGING_TIMEOUT)
+ #define DEFAULT_HS_UTIL_HOGGING_TIMEOUT 5
 
 /**
  * \brief CPU Peak Utilization Number of Intervals
@@ -403,7 +426,8 @@
  *       This parameter controls the size of the array which stores
  *       previously measured utilization values.
  */
-#define HS_UTIL_PEAK_NUM_INTERVAL 64
+ #define HS_UTIL_PEAK_NUM_INTERVAL         HS_INTERNAL_CFGVAL(UTIL_PEAK_NUM_INTERVAL)
+ #define DEFAULT_HS_UTIL_PEAK_NUM_INTERVAL 64
 
 /**
  * \brief CPU Average Utilization Number of Intervals
@@ -414,7 +438,8 @@
  *  \par Limits:
  *       This parameter can't be larger than #HS_UTIL_PEAK_NUM_INTERVAL .
  */
-#define HS_UTIL_AVERAGE_NUM_INTERVAL 4
+ #define HS_UTIL_AVERAGE_NUM_INTERVAL         HS_INTERNAL_CFGVAL(UTIL_AVERAGE_NUM_INTERVAL)
+ #define DEFAULT_HS_UTIL_AVERAGE_NUM_INTERVAL 4
 
 /**
  * \brief Mission specific version number for HS application
@@ -430,7 +455,8 @@
  *       Must be defined as a numeric value that is greater than
  *       or equal to zero.
  */
-#define HS_MISSION_REV 0
+ #define HS_MISSION_REV         HS_INTERNAL_CFGVAL(MISSION_REV)
+ #define DEFAULT_HS_MISSION_REV 0
 
 /**\}*/
 

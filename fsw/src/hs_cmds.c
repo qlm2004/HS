@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -84,7 +83,7 @@ CFE_Status_t HS_SendHkCmd(const HS_SendHkCmd_t *BufPtr)
 
     for (TableIndex = 0; TableIndex < HS_MAX_MONITORED_EVENTS; TableIndex++)
     {
-        if (HS_AppData.EMTablePtr[TableIndex].ActionType != HS_EMT_ACT_NOACT)
+        if (HS_AppData.EMTablePtr[TableIndex].ActionType != HS_EMTActType_NOACT)
         {
             Status = CFE_ES_GetAppIDByName(&AppId, HS_AppData.EMTablePtr[TableIndex].AppName);
 
@@ -99,25 +98,25 @@ CFE_Status_t HS_SendHkCmd(const HS_SendHkCmd_t *BufPtr)
     ** Build the HK status flags byte
     */
     PayloadPtr->StatusFlags = 0;
-    if (HS_AppData.ExeCountState == HS_STATE_ENABLED)
+    if (HS_AppData.ExeCountState == HS_State_ENABLED)
     {
-        PayloadPtr->StatusFlags |= HS_LOADED_XCT;
+        PayloadPtr->StatusFlags |= HS_StatusFlag_LOADED_XCT;
     }
-    if (HS_AppData.MsgActsState == HS_STATE_ENABLED)
+    if (HS_AppData.MsgActsState == HS_State_ENABLED)
     {
-        PayloadPtr->StatusFlags |= HS_LOADED_MAT;
+        PayloadPtr->StatusFlags |= HS_StatusFlag_LOADED_MAT;
     }
-    if (HS_AppData.AppMonLoaded == HS_STATE_ENABLED)
+    if (HS_AppData.AppMonLoaded == HS_State_ENABLED)
     {
-        PayloadPtr->StatusFlags |= HS_LOADED_AMT;
+        PayloadPtr->StatusFlags |= HS_StatusFlag_LOADED_AMT;
     }
-    if (HS_AppData.EventMonLoaded == HS_STATE_ENABLED)
+    if (HS_AppData.EventMonLoaded == HS_State_ENABLED)
     {
-        PayloadPtr->StatusFlags |= HS_LOADED_EMT;
+        PayloadPtr->StatusFlags |= HS_StatusFlag_LOADED_EMT;
     }
-    if (HS_AppData.CDSState == HS_STATE_ENABLED)
+    if (HS_AppData.CDSState == HS_State_ENABLED)
     {
-        PayloadPtr->StatusFlags |= HS_CDS_IN_USE;
+        PayloadPtr->StatusFlags |= HS_StatusFlag_CDS_IN_USE;
     }
 
     /*
@@ -138,12 +137,12 @@ CFE_Status_t HS_SendHkCmd(const HS_SendHkCmd_t *BufPtr)
     {
         ExeCount = HS_INVALID_EXECOUNT;
 
-        if (HS_AppData.ExeCountState == HS_STATE_ENABLED)
+        if (HS_AppData.ExeCountState == HS_State_ENABLED)
         {
             switch (HS_AppData.XCTablePtr[TableIndex].ResourceType)
             {
-                case HS_XCT_TYPE_APP_MAIN:
-                case HS_XCT_TYPE_APP_CHILD:
+                case HS_XCTResType_APP_MAIN:
+                case HS_XCTResType_APP_CHILD:
                     Status = CFE_ES_GetTaskIDByName(&TaskId, HS_AppData.XCTablePtr[TableIndex].ResourceName);
 
                     if (Status == CFE_SUCCESS)
@@ -155,8 +154,8 @@ CFE_Status_t HS_SendHkCmd(const HS_SendHkCmd_t *BufPtr)
                         }
                     }
                     break;
-                case HS_XCT_TYPE_DEVICE:
-                case HS_XCT_TYPE_ISR:
+                case HS_XCTResType_DEVICE:
+                case HS_XCTResType_ISR:
                     Status = CFE_ES_GetGenCounterIDByName(&CounterId, HS_AppData.XCTablePtr[TableIndex].ResourceName);
 
                     if (Status == CFE_SUCCESS)
@@ -164,7 +163,7 @@ CFE_Status_t HS_SendHkCmd(const HS_SendHkCmd_t *BufPtr)
                         CFE_ES_GetGenCount(CounterId, &ExeCount);
                     }
                     break;
-                case HS_XCT_TYPE_NOTYPE:
+                case HS_XCTResType_NOTYPE:
                     /* no action - ExeCount remains HS_INVALID_EXECOUNT */
                     break;
                 default:
@@ -239,7 +238,7 @@ CFE_Status_t HS_EnableAppMonCmd(const HS_EnableAppMonCmd_t *BufPtr)
 {
     HS_AppData.CmdCount++;
 
-    if (HS_AppData.CurrentAppMonState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentAppMonState == HS_State_ENABLED)
     {
         CFE_EVS_SendEvent(HS_ENABLE_APPMON_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "Application Monitoring is *already* Enabled");
@@ -247,7 +246,7 @@ CFE_Status_t HS_EnableAppMonCmd(const HS_EnableAppMonCmd_t *BufPtr)
     else
     {
         HS_AppMonStatusRefresh();
-        HS_AppData.CurrentAppMonState = HS_STATE_ENABLED;
+        HS_AppData.CurrentAppMonState = HS_State_ENABLED;
         CFE_EVS_SendEvent(HS_ENABLE_APPMON_INF_EID, CFE_EVS_EventType_INFORMATION, "Application Monitoring Enabled");
     }
 
@@ -263,14 +262,14 @@ CFE_Status_t HS_DisableAppMonCmd(const HS_DisableAppMonCmd_t *BufPtr)
 {
     HS_AppData.CmdCount++;
 
-    if (HS_AppData.CurrentAppMonState == HS_STATE_DISABLED)
+    if (HS_AppData.CurrentAppMonState == HS_State_DISABLED)
     {
         CFE_EVS_SendEvent(HS_DISABLE_APPMON_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "Application Monitoring is *already* Disabled");
     }
     else
     {
-        HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
+        HS_AppData.CurrentAppMonState = HS_State_DISABLED;
         CFE_EVS_SendEvent(HS_DISABLE_APPMON_INF_EID, CFE_EVS_EventType_INFORMATION, "Application Monitoring Disabled");
     }
 
@@ -286,7 +285,7 @@ CFE_Status_t HS_EnableEventMonCmd(const HS_EnableEventMonCmd_t *BufPtr)
 {
     CFE_Status_t Status = CFE_SUCCESS;
 
-    if (HS_AppData.CurrentEventMonState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentEventMonState == HS_State_ENABLED)
     {
         CFE_EVS_SendEvent(HS_ENABLE_EVENTMON_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "Event Monitoring is *already* Enabled");
@@ -302,7 +301,7 @@ CFE_Status_t HS_EnableEventMonCmd(const HS_EnableEventMonCmd_t *BufPtr)
 
             if (Status == CFE_SUCCESS)
             {
-                HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+                HS_AppData.CurrentEventMonState = HS_State_ENABLED;
                 CFE_EVS_SendEvent(HS_ENABLE_EVENTMON_INF_EID, CFE_EVS_EventType_INFORMATION,
                                   "Event Monitoring Enabled");
             }
@@ -342,7 +341,7 @@ CFE_Status_t HS_DisableEventMonCmd(const HS_DisableEventMonCmd_t *BufPtr)
 {
     CFE_Status_t Status = CFE_SUCCESS;
 
-    if (HS_AppData.CurrentEventMonState == HS_STATE_DISABLED)
+    if (HS_AppData.CurrentEventMonState == HS_State_DISABLED)
     {
         CFE_EVS_SendEvent(HS_DISABLE_EVENTMON_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "Event Monitoring is *already* Disabled");
@@ -357,7 +356,7 @@ CFE_Status_t HS_DisableEventMonCmd(const HS_DisableEventMonCmd_t *BufPtr)
 
             if (Status == CFE_SUCCESS)
             {
-                HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+                HS_AppData.CurrentEventMonState = HS_State_DISABLED;
                 CFE_EVS_SendEvent(HS_DISABLE_EVENTMON_INF_EID, CFE_EVS_EventType_INFORMATION,
                                   "Event Monitoring Disabled");
             }
@@ -397,14 +396,14 @@ CFE_Status_t HS_EnableAlivenessCmd(const HS_EnableAlivenessCmd_t *BufPtr)
 {
     HS_AppData.CmdCount++;
 
-    if (HS_AppData.CurrentAlivenessState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentAlivenessState == HS_State_ENABLED)
     {
         CFE_EVS_SendEvent(HS_ENABLE_ALIVENESS_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "Aliveness Indicator is *already* Enabled");
     }
     else
     {
-        HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+        HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
         CFE_EVS_SendEvent(HS_ENABLE_ALIVENESS_INF_EID, CFE_EVS_EventType_INFORMATION, "Aliveness Indicator Enabled");
     }
 
@@ -420,14 +419,14 @@ CFE_Status_t HS_DisableAlivenessCmd(const HS_DisableAlivenessCmd_t *BufPtr)
 {
     HS_AppData.CmdCount++;
 
-    if (HS_AppData.CurrentAlivenessState == HS_STATE_DISABLED)
+    if (HS_AppData.CurrentAlivenessState == HS_State_DISABLED)
     {
         CFE_EVS_SendEvent(HS_DISABLE_ALIVENESS_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "Aliveness Indicator is *already* Disabled");
     }
     else
     {
-        HS_AppData.CurrentAlivenessState = HS_STATE_DISABLED;
+        HS_AppData.CurrentAlivenessState = HS_State_DISABLED;
         CFE_EVS_SendEvent(HS_DISABLE_ALIVENESS_INF_EID, CFE_EVS_EventType_INFORMATION, "Aliveness Indicator Disabled");
     }
 
@@ -443,14 +442,14 @@ CFE_Status_t HS_EnableCpuHogCmd(const HS_EnableCpuHogCmd_t *BufPtr)
 {
     HS_AppData.CmdCount++;
 
-    if (HS_AppData.CurrentCPUHogState == HS_STATE_ENABLED)
+    if (HS_AppData.CurrentCPUHogState == HS_State_ENABLED)
     {
         CFE_EVS_SendEvent(HS_ENABLE_CPUHOG_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "CPU Hogging Indicator is *already* Enabled");
     }
     else
     {
-        HS_AppData.CurrentCPUHogState = HS_STATE_ENABLED;
+        HS_AppData.CurrentCPUHogState = HS_State_ENABLED;
         CFE_EVS_SendEvent(HS_ENABLE_CPUHOG_INF_EID, CFE_EVS_EventType_INFORMATION, "CPU Hogging Indicator Enabled");
     }
 
@@ -466,14 +465,14 @@ CFE_Status_t HS_DisableCpuHogCmd(const HS_DisableCpuHogCmd_t *BufPtr)
 {
     HS_AppData.CmdCount++;
 
-    if (HS_AppData.CurrentCPUHogState == HS_STATE_DISABLED)
+    if (HS_AppData.CurrentCPUHogState == HS_State_DISABLED)
     {
         CFE_EVS_SendEvent(HS_DISABLE_CPUHOG_INF_EID, CFE_EVS_EventType_INFORMATION,
                           "CPU Hogging Indicator is *already* Disabled");
     }
     else
     {
-        HS_AppData.CurrentCPUHogState = HS_STATE_DISABLED;
+        HS_AppData.CurrentCPUHogState = HS_State_DISABLED;
         CFE_EVS_SendEvent(HS_DISABLE_CPUHOG_INF_EID, CFE_EVS_EventType_INFORMATION, "CPU Hogging Indicator Disabled");
     }
 
@@ -555,13 +554,13 @@ void HS_AcquirePointers(void)
         /*
         ** Only report and disable if enabled or the table was previously loaded (AppMon)
         */
-        if ((HS_AppData.AppMonLoaded == HS_STATE_ENABLED) || (HS_AppData.CurrentAppMonState == HS_STATE_ENABLED))
+        if ((HS_AppData.AppMonLoaded == HS_State_ENABLED) || (HS_AppData.CurrentAppMonState == HS_State_ENABLED))
         {
             CFE_EVS_SendEvent(HS_APPMON_GETADDR_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Error getting AppMon Table address, RC=0x%08X, Application Monitoring Disabled",
                               (unsigned int)Status);
-            HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
-            HS_AppData.AppMonLoaded       = HS_STATE_DISABLED;
+            HS_AppData.CurrentAppMonState = HS_State_DISABLED;
+            HS_AppData.AppMonLoaded       = HS_State_DISABLED;
         }
     }
     /*
@@ -569,7 +568,7 @@ void HS_AcquirePointers(void)
     */
     else
     {
-        HS_AppData.AppMonLoaded = HS_STATE_ENABLED;
+        HS_AppData.AppMonLoaded = HS_State_ENABLED;
     }
 
     /*
@@ -595,13 +594,13 @@ void HS_AcquirePointers(void)
         /*
         ** Only report and disable if enabled or the table was previously loaded (EventMon)
         */
-        if ((HS_AppData.EventMonLoaded == HS_STATE_ENABLED) || (HS_AppData.CurrentEventMonState == HS_STATE_ENABLED))
+        if ((HS_AppData.EventMonLoaded == HS_State_ENABLED) || (HS_AppData.CurrentEventMonState == HS_State_ENABLED))
         {
             CFE_EVS_SendEvent(HS_EVENTMON_GETADDR_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Error getting EventMon Table address, RC=0x%08X, Event Monitoring Disabled",
                               (unsigned int)Status);
 
-            if (HS_AppData.CurrentEventMonState == HS_STATE_ENABLED)
+            if (HS_AppData.CurrentEventMonState == HS_State_ENABLED)
             {
                 Status = CFE_SB_Unsubscribe(CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID), HS_AppData.EventPipe);
 
@@ -620,8 +619,8 @@ void HS_AcquirePointers(void)
                 }
             }
 
-            HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
-            HS_AppData.EventMonLoaded       = HS_STATE_DISABLED;
+            HS_AppData.CurrentEventMonState = HS_State_DISABLED;
+            HS_AppData.EventMonLoaded       = HS_State_DISABLED;
         }
     }
     /*
@@ -629,7 +628,7 @@ void HS_AcquirePointers(void)
     */
     else
     {
-        HS_AppData.EventMonLoaded = HS_STATE_ENABLED;
+        HS_AppData.EventMonLoaded = HS_State_ENABLED;
     }
 
     /*
@@ -663,11 +662,11 @@ void HS_AcquirePointers(void)
         /*
         ** To prevent redundant reporting, only report if enabled (MsgActs)
         */
-        if (HS_AppData.MsgActsState == HS_STATE_ENABLED)
+        if (HS_AppData.MsgActsState == HS_State_ENABLED)
         {
             CFE_EVS_SendEvent(HS_MSGACTS_GETADDR_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Error getting MsgActs Table address, RC=0x%08X", (unsigned int)Status);
-            HS_AppData.MsgActsState = HS_STATE_DISABLED;
+            HS_AppData.MsgActsState = HS_State_DISABLED;
         }
     }
     /*
@@ -675,7 +674,7 @@ void HS_AcquirePointers(void)
     */
     else
     {
-        HS_AppData.MsgActsState = HS_STATE_ENABLED;
+        HS_AppData.MsgActsState = HS_State_ENABLED;
     }
 
     /*
@@ -701,11 +700,11 @@ void HS_AcquirePointers(void)
         /*
         ** To prevent redundant reporting, only report if enabled (ExeCount)
         */
-        if (HS_AppData.ExeCountState == HS_STATE_ENABLED)
+        if (HS_AppData.ExeCountState == HS_State_ENABLED)
         {
             CFE_EVS_SendEvent(HS_EXECOUNT_GETADDR_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Error getting ExeCount Table address, RC=0x%08X", (unsigned int)Status);
-            HS_AppData.ExeCountState = HS_STATE_DISABLED;
+            HS_AppData.ExeCountState = HS_State_DISABLED;
         }
     }
     /*
@@ -713,7 +712,7 @@ void HS_AcquirePointers(void)
     */
     else
     {
-        HS_AppData.ExeCountState = HS_STATE_ENABLED;
+        HS_AppData.ExeCountState = HS_State_ENABLED;
     }
 }
 
@@ -743,7 +742,7 @@ void HS_AppMonStatusRefresh(void)
         HS_AppData.AppMonLastExeCount[TableIndex] = 0;
 
         if ((HS_AppData.AMTablePtr[TableIndex].CycleCount == 0) ||
-            (HS_AppData.AMTablePtr[TableIndex].ActionType == HS_AMT_ACT_NOACT))
+            (HS_AppData.AMTablePtr[TableIndex].ActionType == HS_AMTActType_NOACT))
         {
             HS_AppData.AppMonCheckInCountdown[TableIndex] = 0;
         }

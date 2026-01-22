@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -56,6 +55,24 @@
 /**\}*/
 
 #define HS_TBL_VAL_ERR (-1)
+
+/**
+ * \name HS Invalid Execution Counter
+ * \{
+ */
+#define HS_INVALID_EXECOUNT 0xFFFFFFFF
+/**\}*/
+
+/**
+ * \name HS Table Name Strings
+ * \{
+ */
+#define HS_AMT_TABLENAME "AppMon_Tbl"   /**< \brief AppMon Table Name */
+#define HS_EMT_TABLENAME "EventMon_Tbl" /**< \brief EventMon Table Name */
+#define HS_XCT_TABLENAME "ExeCount_Tbl" /**< \brief ExeCount Table Name */
+#define HS_MAT_TABLENAME "MsgActs_Tbl"  /**< \brief MsgAction Table Name */
+/**\}*/
+
 
 /************************************************************************
  * Type Definitions

@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -73,9 +72,9 @@ void HS_SendHkCmd_Test_InvalidEventMon(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    /* 2 entries that are not HS_EMT_ACT_NOACT for branch coverage */
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT + 1;
-    HS_AppData.EMTablePtr[1].ActionType = HS_EMT_ACT_NOACT + 1;
+    /* 2 entries that are not HS_EMTActType_NOACT for branch coverage */
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT + 1;
+    HS_AppData.EMTablePtr[1].ActionType = HS_EMTActType_NOACT + 1;
 
     /* Fail first, succeed on second */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppIDByName), 1, -1);
@@ -148,7 +147,7 @@ void HS_SendHkCmd_Test_AllFlagsEnabled(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_NOTYPE;
+        XCTable[i].ResourceType = HS_XCTResType_NOTYPE;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -161,7 +160,7 @@ void HS_SendHkCmd_Test_AllFlagsEnabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -174,17 +173,17 @@ void HS_SendHkCmd_Test_AllFlagsEnabled(void)
     HS_AppData.EventsMonitoredCount    = 9;
     HS_AppData.MsgActExec              = 10;
 
-    HS_AppData.ExeCountState  = HS_STATE_ENABLED;
-    HS_AppData.MsgActsState   = HS_STATE_ENABLED;
-    HS_AppData.AppMonLoaded   = HS_STATE_ENABLED;
-    HS_AppData.EventMonLoaded = HS_STATE_ENABLED;
-    HS_AppData.CDSState       = HS_STATE_ENABLED;
+    HS_AppData.ExeCountState  = HS_State_ENABLED;
+    HS_AppData.MsgActsState   = HS_State_ENABLED;
+    HS_AppData.AppMonLoaded   = HS_State_ENABLED;
+    HS_AppData.EventMonLoaded = HS_State_ENABLED;
+    HS_AppData.CDSState       = HS_State_ENABLED;
 
-    ExpectedStatusFlags |= HS_LOADED_XCT;
-    ExpectedStatusFlags |= HS_LOADED_MAT;
-    ExpectedStatusFlags |= HS_LOADED_AMT;
-    ExpectedStatusFlags |= HS_LOADED_EMT;
-    ExpectedStatusFlags |= HS_CDS_IN_USE;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_XCT;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_MAT;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_AMT;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_EMT;
+    ExpectedStatusFlags |= HS_StatusFlag_CDS_IN_USE;
 
     /* Execute the function being tested */
     HS_SendHkCmd(&UT_CmdBuf.SendHkCmd);
@@ -242,7 +241,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppMain(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_APP_MAIN;
+        XCTable[i].ResourceType = HS_XCTResType_APP_MAIN;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -255,7 +254,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppMain(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -273,8 +272,8 @@ void HS_SendHkCmd_Test_ResourceTypeAppMain(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_APP_MAIN;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_APP_MAIN;
 
     /* Causes line "Status = CFE_ES_GetTaskInfo(&TaskInfo, TaskId)" to be reached */
     UT_SetDeferredRetcode(UT_KEY(OS_TaskGetIdByName), 1, OS_SUCCESS);
@@ -339,7 +338,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppChild(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_APP_CHILD;
+        XCTable[i].ResourceType = HS_XCTResType_APP_CHILD;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -352,7 +351,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppChild(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -370,8 +369,8 @@ void HS_SendHkCmd_Test_ResourceTypeAppChild(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_APP_CHILD;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_APP_CHILD;
 
     /* Causes line "Status = CFE_ES_GetTaskInfo(&TaskInfo, TaskId)" to be reached */
     UT_SetDeferredRetcode(UT_KEY(OS_TaskGetIdByName), 1, OS_SUCCESS);
@@ -436,7 +435,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppChildTaskIdError(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_APP_CHILD;
+        XCTable[i].ResourceType = HS_XCTResType_APP_CHILD;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -449,7 +448,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppChildTaskIdError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -467,8 +466,8 @@ void HS_SendHkCmd_Test_ResourceTypeAppChildTaskIdError(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_APP_CHILD;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_APP_CHILD;
 
     /* Causes line "Status = CFE_ES_GetTaskInfo(&TaskInfo, TaskId)" to be skipped */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetTaskIDByName), 1, -1);
@@ -533,7 +532,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppChildTaskInfoError(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_APP_CHILD;
+        XCTable[i].ResourceType = HS_XCTResType_APP_CHILD;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -546,7 +545,7 @@ void HS_SendHkCmd_Test_ResourceTypeAppChildTaskInfoError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -564,8 +563,8 @@ void HS_SendHkCmd_Test_ResourceTypeAppChildTaskInfoError(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_APP_CHILD;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_APP_CHILD;
 
     /* Causes line "Status = CFE_ES_GetTaskInfo(&TaskInfo, TaskId)" to be skipped */
     UT_SetDeferredRetcode(UT_KEY(OS_TaskGetIdByName), 1, OS_SUCCESS);
@@ -628,7 +627,7 @@ void HS_SendHkCmd_Test_ResourceTypeDevice(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_DEVICE;
+        XCTable[i].ResourceType = HS_XCTResType_DEVICE;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -641,7 +640,7 @@ void HS_SendHkCmd_Test_ResourceTypeDevice(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -659,8 +658,8 @@ void HS_SendHkCmd_Test_ResourceTypeDevice(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_DEVICE;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_DEVICE;
 
     /* Causes line "Status = CFE_ES_GetTaskInfo(&TaskInfo, TaskId)" to be reached */
     UT_SetDeferredRetcode(UT_KEY(OS_TaskGetIdByName), 1, OS_SUCCESS);
@@ -722,7 +721,7 @@ void HS_SendHkCmd_Test_ResourceTypeISR(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_ISR;
+        XCTable[i].ResourceType = HS_XCTResType_ISR;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -735,7 +734,7 @@ void HS_SendHkCmd_Test_ResourceTypeISR(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -753,8 +752,8 @@ void HS_SendHkCmd_Test_ResourceTypeISR(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_ISR;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_ISR;
 
     /* Execute the function being tested */
     HS_SendHkCmd(&UT_CmdBuf.SendHkCmd);
@@ -810,7 +809,7 @@ void HS_SendHkCmd_Test_ResourceTypeISRGenCounterError(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = HS_XCT_TYPE_ISR;
+        XCTable[i].ResourceType = HS_XCTResType_ISR;
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -823,7 +822,7 @@ void HS_SendHkCmd_Test_ResourceTypeISRGenCounterError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -841,8 +840,8 @@ void HS_SendHkCmd_Test_ResourceTypeISRGenCounterError(void)
         HS_AppData.AppMonEnables[TableIndex] = TableIndex;
     }
 
-    HS_AppData.ExeCountState              = HS_STATE_ENABLED;
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_ISR;
+    HS_AppData.ExeCountState              = HS_State_ENABLED;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_ISR;
 
     /* Set CFE_ES_GetGenCounterIDByName to return error and skip CFE_ES_GetGenCount(TaskId, &ExeCount) */
     UT_SetDefaultReturnValue(UT_KEY(CFE_ES_GetGenCounterIDByName), -1);
@@ -902,7 +901,7 @@ void HS_SendHkCmd_Test_ResourceTypeUnknown(void)
     /* Set the XCTable Resource type to something invalid */
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        XCTable[i].ResourceType = (HS_XCT_TYPE_ISR * 2);
+        XCTable[i].ResourceType = (HS_XCTResType_ISR * 2);
     }
 
     HS_AppData.EMTablePtr = EMTable;
@@ -915,7 +914,7 @@ void HS_SendHkCmd_Test_ResourceTypeUnknown(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_NOACT;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_NOACT;
 
     HS_AppData.CmdCount                = 1;
     HS_AppData.CmdErrCount             = 2;
@@ -928,17 +927,17 @@ void HS_SendHkCmd_Test_ResourceTypeUnknown(void)
     HS_AppData.EventsMonitoredCount    = 9;
     HS_AppData.MsgActExec              = 10;
 
-    HS_AppData.ExeCountState  = HS_STATE_ENABLED;
-    HS_AppData.MsgActsState   = HS_STATE_ENABLED;
-    HS_AppData.AppMonLoaded   = HS_STATE_ENABLED;
-    HS_AppData.EventMonLoaded = HS_STATE_ENABLED;
-    HS_AppData.CDSState       = HS_STATE_ENABLED;
+    HS_AppData.ExeCountState  = HS_State_ENABLED;
+    HS_AppData.MsgActsState   = HS_State_ENABLED;
+    HS_AppData.AppMonLoaded   = HS_State_ENABLED;
+    HS_AppData.EventMonLoaded = HS_State_ENABLED;
+    HS_AppData.CDSState       = HS_State_ENABLED;
 
-    ExpectedStatusFlags |= HS_LOADED_XCT;
-    ExpectedStatusFlags |= HS_LOADED_MAT;
-    ExpectedStatusFlags |= HS_LOADED_AMT;
-    ExpectedStatusFlags |= HS_LOADED_EMT;
-    ExpectedStatusFlags |= HS_CDS_IN_USE;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_XCT;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_MAT;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_AMT;
+    ExpectedStatusFlags |= HS_StatusFlag_LOADED_EMT;
+    ExpectedStatusFlags |= HS_StatusFlag_CDS_IN_USE;
 
     /* Execute the function being tested */
     HS_SendHkCmd(&UT_CmdBuf.SendHkCmd);
@@ -1035,8 +1034,7 @@ void HS_ResetCmd_Test(void)
     UtAssert_True(HS_AppData.CmdCount == 0, "HS_AppData.CmdCount == 0");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_RESET_INF_EID);
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType,
-                      CFE_EVS_EventType_INFORMATION);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
         strncmp(ExpectedEventString[0], context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
@@ -1086,7 +1084,7 @@ void HS_EnableAppMonCmd_Test(void)
     HS_AppData.AMTablePtr = AMTable;
 
     /* Set to Disabled so the function can freshly set it to Enabled (without it already being set that way) */
-    HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentAppMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_EnableAppMonCmd(&UT_CmdBuf.EnableAppMonCmd);
@@ -1094,8 +1092,8 @@ void HS_EnableAppMonCmd_Test(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_ENABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_APPMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1132,7 +1130,7 @@ void HS_EnableAppMonCmd_Test_AlreadyEnabled(void)
     HS_AppData.AMTablePtr = AMTable;
 
     /* Set to Enabled to test response when already in the commanded state. */
-    HS_AppData.CurrentAppMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAppMonState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_EnableAppMonCmd(&UT_CmdBuf.EnableAppMonCmd);
@@ -1140,8 +1138,8 @@ void HS_EnableAppMonCmd_Test_AlreadyEnabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_ENABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_APPMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1173,7 +1171,7 @@ void HS_DisableAppMonCmd_Test(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
     /* Set to Enabled so the function can freshly set it to Disabled (without it already being set that way) */
-    HS_AppData.CurrentAppMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAppMonState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_DisableAppMonCmd(&UT_CmdBuf.DisableAppMonCmd);
@@ -1181,8 +1179,8 @@ void HS_DisableAppMonCmd_Test(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_APPMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1215,7 +1213,7 @@ void HS_DisableAppMonCmd_Test_AlreadyDisabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
     /* Set to Disabled to test response when already in the commanded state. */
-    HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentAppMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_DisableAppMonCmd(&UT_CmdBuf.DisableAppMonCmd);
@@ -1223,8 +1221,8 @@ void HS_DisableAppMonCmd_Test_AlreadyDisabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_APPMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1255,7 +1253,7 @@ void HS_EnableEventMonCmd_Test_Disabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_EnableEventMonCmd(&UT_CmdBuf.EnableEventMonCmd);
@@ -1263,8 +1261,8 @@ void HS_EnableEventMonCmd_Test_Disabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_ENABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_EVENTMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1295,7 +1293,7 @@ void HS_EnableEventMonCmd_Test_AlreadyEnabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_EnableEventMonCmd(&UT_CmdBuf.EnableEventMonCmd);
@@ -1303,8 +1301,8 @@ void HS_EnableEventMonCmd_Test_AlreadyEnabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_ENABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_EVENTMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1336,7 +1334,7 @@ void HS_EnableEventMonCmd_Test_SubscribeLongError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
 
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_SubscribeEx), 1, -1);
 
@@ -1346,8 +1344,8 @@ void HS_EnableEventMonCmd_Test_SubscribeLongError(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdErrCount == 1, "HS_AppData.CmdErrCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EVENTMON_LONG_SUB_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -1379,7 +1377,7 @@ void HS_EnableEventMonCmd_Test_SubscribeShortError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
 
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_SubscribeEx), 2, -1);
 
@@ -1389,8 +1387,8 @@ void HS_EnableEventMonCmd_Test_SubscribeShortError(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdErrCount == 1, "HS_AppData.CmdErrCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EVENTMON_SHORT_SUB_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -1421,7 +1419,7 @@ void HS_DisableEventMonCmd_Test_Enabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_DisableEventMonCmd(&UT_CmdBuf.DisableEventMonCmd);
@@ -1429,8 +1427,8 @@ void HS_DisableEventMonCmd_Test_Enabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_EVENTMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1461,7 +1459,7 @@ void HS_DisableEventMonCmd_Test_AlreadyDisabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_DisableEventMonCmd(&UT_CmdBuf.DisableEventMonCmd);
@@ -1469,8 +1467,8 @@ void HS_DisableEventMonCmd_Test_AlreadyDisabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_EVENTMON_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1502,7 +1500,7 @@ void HS_DisableEventMonCmd_Test_UnsubscribeLongError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
 
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_Unsubscribe), 1, -1);
 
@@ -1512,8 +1510,8 @@ void HS_DisableEventMonCmd_Test_UnsubscribeLongError(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdErrCount == 1, "HS_AppData.CmdErrCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_ENABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EVENTMON_LONG_UNSUB_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -1545,7 +1543,7 @@ void HS_DisableEventMonCmd_Test_UnsubscribeShortError(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
 
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_Unsubscribe), 2, -1);
 
@@ -1555,8 +1553,8 @@ void HS_DisableEventMonCmd_Test_UnsubscribeShortError(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdErrCount == 1, "HS_AppData.CmdErrCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_ENABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EVENTMON_SHORT_UNSUB_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -1587,7 +1585,7 @@ void HS_EnableAlivenessCmd_Test(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentAlivenessState = HS_STATE_DISABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_EnableAlivenessCmd(&UT_CmdBuf.EnableAlivenessCmd);
@@ -1595,8 +1593,8 @@ void HS_EnableAlivenessCmd_Test(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentAlivenessState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_State_ENABLED,
+                  "HS_AppData.CurrentAlivenessState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_ALIVENESS_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1627,7 +1625,7 @@ void HS_EnableAlivenessCmd_Test_AlreadyEnabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_EnableAlivenessCmd(&UT_CmdBuf.EnableAlivenessCmd);
@@ -1635,8 +1633,8 @@ void HS_EnableAlivenessCmd_Test_AlreadyEnabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentAlivenessState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_State_ENABLED,
+                  "HS_AppData.CurrentAlivenessState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_ALIVENESS_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1667,7 +1665,7 @@ void HS_DisableAlivenessCmd_Test(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_DisableAlivenessCmd(&UT_CmdBuf.DisableAlivenessCmd);
@@ -1675,8 +1673,8 @@ void HS_DisableAlivenessCmd_Test(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAlivenessState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAlivenessState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_ALIVENESS_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1707,7 +1705,7 @@ void HS_DisableAlivenessCmd_Test_AlreadyDisabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentAlivenessState = HS_STATE_DISABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_DisableAlivenessCmd(&UT_CmdBuf.DisableAlivenessCmd);
@@ -1715,8 +1713,8 @@ void HS_DisableAlivenessCmd_Test_AlreadyDisabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAlivenessState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAlivenessState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAlivenessState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_ALIVENESS_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1747,7 +1745,7 @@ void HS_EnableCpuHogCmd_Test(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentCPUHogState = HS_STATE_DISABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_EnableCpuHogCmd(&UT_CmdBuf.EnableCpuHogCmd);
@@ -1755,8 +1753,8 @@ void HS_EnableCpuHogCmd_Test(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentCPUHogState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_State_ENABLED,
+                  "HS_AppData.CurrentCPUHogState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_CPUHOG_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1787,7 +1785,7 @@ void HS_EnableCpuHogCmd_Test_AlreadyEnabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentCPUHogState = HS_STATE_ENABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_EnableCpuHogCmd(&UT_CmdBuf.EnableCpuHogCmd);
@@ -1795,8 +1793,8 @@ void HS_EnableCpuHogCmd_Test_AlreadyEnabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_STATE_ENABLED,
-                  "HS_AppData.CurrentCPUHogState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_State_ENABLED,
+                  "HS_AppData.CurrentCPUHogState == HS_State_ENABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_ENABLE_CPUHOG_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1827,7 +1825,7 @@ void HS_DisableCpuHogCmd_Test(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentCPUHogState = HS_STATE_ENABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_DisableCpuHogCmd(&UT_CmdBuf.DisableCpuHogCmd);
@@ -1835,8 +1833,8 @@ void HS_DisableCpuHogCmd_Test(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentCPUHogState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_State_DISABLED,
+                  "HS_AppData.CurrentCPUHogState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_CPUHOG_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1867,7 +1865,7 @@ void HS_DisableCpuHogCmd_Test_AlreadyDisabled(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    HS_AppData.CurrentCPUHogState = HS_STATE_DISABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_DisableCpuHogCmd(&UT_CmdBuf.DisableCpuHogCmd);
@@ -1875,8 +1873,8 @@ void HS_DisableCpuHogCmd_Test_AlreadyDisabled(void)
     /* Verify results */
     UtAssert_True(HS_AppData.CmdCount == 1, "HS_AppData.CmdCount == 1");
 
-    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentCPUHogState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentCPUHogState == HS_State_DISABLED,
+                  "HS_AppData.CurrentCPUHogState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_DISABLE_CPUHOG_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
@@ -1972,7 +1970,14 @@ void HS_SetMaxResetsCmd_Test(void)
 
 void HS_AcquirePointers_Test_Nominal(void)
 {
-    HS_AMTEntry_t AMTable[HS_MAX_MONITORED_APPS];
+    HS_AMTEntry_t  AMTable[HS_MAX_MONITORED_APPS];
+    HS_EMTEntry_t  EMTable[HS_MAX_MONITORED_EVENTS];
+    HS_MATEntry_t  MATable[HS_MAX_MSG_ACT_TYPES];
+    HS_XCTEntry_t  XCTable[HS_MAX_EXEC_CNT_SLOTS];
+    HS_AMTEntry_t *AMTablePtr = AMTable;
+    HS_EMTEntry_t *EMTablePtr = EMTable;
+    HS_MATEntry_t *MATablePtr = MATable;
+    HS_XCTEntry_t *XCTablePtr = XCTable;
 
     memset(AMTable, 0, sizeof(AMTable));
 
@@ -1980,17 +1985,21 @@ void HS_AcquirePointers_Test_Nominal(void)
 
     /* Satisfies all instances of (Status == CFE_TBL_INFO_UPDATED), skips all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
+    UT_SetDataBuffer(UT_KEY(CFE_TBL_GetAddress), &AMTablePtr, sizeof(AMTablePtr), false);
+    UT_SetDataBuffer(UT_KEY(CFE_TBL_GetAddress), &EMTablePtr, sizeof(EMTablePtr), false);
+    UT_SetDataBuffer(UT_KEY(CFE_TBL_GetAddress), &MATablePtr, sizeof(MATablePtr), false);
+    UT_SetDataBuffer(UT_KEY(CFE_TBL_GetAddress), &XCTablePtr, sizeof(XCTablePtr), false);
 
-    HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentAppMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_ENABLED, "HS_AppData.AppMonLoaded == HS_STATE_ENABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_ENABLED, "HS_AppData.EventMonLoaded == HS_STATE_ENABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_ENABLED, "HS_AppData.MsgActsState == HS_STATE_ENABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_ENABLED, "HS_AppData.ExeCountState == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_ENABLED, "HS_AppData.AppMonLoaded == HS_State_ENABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_ENABLED, "HS_AppData.EventMonLoaded == HS_State_ENABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_ENABLED, "HS_AppData.MsgActsState == HS_State_ENABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_ENABLED, "HS_AppData.ExeCountState == HS_State_ENABLED");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 0, "CFE_EVS_SendEvent was called %u time(s), expected 0",
@@ -2010,12 +2019,12 @@ void HS_AcquirePointers_Test_ErrorsWithAppMonLoadedAndEventMonLoadedEnabled(void
     snprintf(ExpectedEventString[3], CFE_MISSION_EVS_MAX_MESSAGE_LENGTH,
              "Error getting ExeCount Table address, RC=0x%%08X");
 
-    HS_AppData.AppMonLoaded         = HS_STATE_ENABLED;
-    HS_AppData.EventMonLoaded       = HS_STATE_ENABLED;
-    HS_AppData.CurrentAppMonState   = HS_STATE_DISABLED;
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
-    HS_AppData.MsgActsState         = HS_STATE_ENABLED;
-    HS_AppData.ExeCountState        = HS_STATE_ENABLED;
+    HS_AppData.AppMonLoaded         = HS_State_ENABLED;
+    HS_AppData.EventMonLoaded       = HS_State_ENABLED;
+    HS_AppData.CurrentAppMonState   = HS_State_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
+    HS_AppData.MsgActsState         = HS_State_ENABLED;
+    HS_AppData.ExeCountState        = HS_State_ENABLED;
 
     /* Causes to enter all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), -1);
@@ -2024,14 +2033,14 @@ void HS_AcquirePointers_Test_ErrorsWithAppMonLoadedAndEventMonLoadedEnabled(void
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_DISABLED, "HS_AppData.AppMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_DISABLED, "HS_AppData.EventMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_DISABLED, "HS_AppData.MsgActsState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_DISABLED, "HS_AppData.ExeCountState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_DISABLED, "HS_AppData.AppMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_DISABLED, "HS_AppData.EventMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_DISABLED, "HS_AppData.MsgActsState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_DISABLED, "HS_AppData.ExeCountState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_APPMON_GETADDR_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -2085,12 +2094,12 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabled2(v
     snprintf(ExpectedEventString[4], CFE_MISSION_EVS_MAX_MESSAGE_LENGTH,
              "Error getting ExeCount Table address, RC=0x%%08X");
 
-    HS_AppData.AppMonLoaded         = HS_STATE_DISABLED;
-    HS_AppData.EventMonLoaded       = HS_STATE_DISABLED;
-    HS_AppData.CurrentAppMonState   = HS_STATE_ENABLED;
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
-    HS_AppData.MsgActsState         = HS_STATE_ENABLED;
-    HS_AppData.ExeCountState        = HS_STATE_ENABLED;
+    HS_AppData.AppMonLoaded         = HS_State_DISABLED;
+    HS_AppData.EventMonLoaded       = HS_State_DISABLED;
+    HS_AppData.CurrentAppMonState   = HS_State_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
+    HS_AppData.MsgActsState         = HS_State_ENABLED;
+    HS_AppData.ExeCountState        = HS_State_ENABLED;
 
     /* Causes to enter all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), -1);
@@ -2102,14 +2111,14 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabled2(v
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_DISABLED, "HS_AppData.AppMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_DISABLED, "HS_AppData.EventMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_DISABLED, "HS_AppData.MsgActsState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_DISABLED, "HS_AppData.ExeCountState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_DISABLED, "HS_AppData.AppMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_DISABLED, "HS_AppData.EventMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_DISABLED, "HS_AppData.MsgActsState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_DISABLED, "HS_AppData.ExeCountState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_APPMON_GETADDR_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -2171,12 +2180,12 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabled(vo
     snprintf(ExpectedEventString[4], CFE_MISSION_EVS_MAX_MESSAGE_LENGTH,
              "Error getting ExeCount Table address, RC=0x%%08X");
 
-    HS_AppData.AppMonLoaded         = HS_STATE_DISABLED;
-    HS_AppData.EventMonLoaded       = HS_STATE_DISABLED;
-    HS_AppData.CurrentAppMonState   = HS_STATE_ENABLED;
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
-    HS_AppData.MsgActsState         = HS_STATE_ENABLED;
-    HS_AppData.ExeCountState        = HS_STATE_ENABLED;
+    HS_AppData.AppMonLoaded         = HS_State_DISABLED;
+    HS_AppData.EventMonLoaded       = HS_State_DISABLED;
+    HS_AppData.CurrentAppMonState   = HS_State_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
+    HS_AppData.MsgActsState         = HS_State_ENABLED;
+    HS_AppData.ExeCountState        = HS_State_ENABLED;
 
     /* Causes to enter all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), -1);
@@ -2188,14 +2197,14 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabled(vo
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_DISABLED, "HS_AppData.AppMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_DISABLED, "HS_AppData.EventMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_DISABLED, "HS_AppData.MsgActsState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_DISABLED, "HS_AppData.ExeCountState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_DISABLED, "HS_AppData.AppMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_DISABLED, "HS_AppData.EventMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_DISABLED, "HS_AppData.MsgActsState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_DISABLED, "HS_AppData.ExeCountState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_APPMON_GETADDR_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -2244,12 +2253,12 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabled(vo
 
 void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabledNoSubscribeError(void)
 {
-    HS_AppData.AppMonLoaded         = HS_STATE_DISABLED;
-    HS_AppData.EventMonLoaded       = HS_STATE_DISABLED;
-    HS_AppData.CurrentAppMonState   = HS_STATE_ENABLED;
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
-    HS_AppData.MsgActsState         = HS_STATE_ENABLED;
-    HS_AppData.ExeCountState        = HS_STATE_ENABLED;
+    HS_AppData.AppMonLoaded         = HS_State_DISABLED;
+    HS_AppData.EventMonLoaded       = HS_State_DISABLED;
+    HS_AppData.CurrentAppMonState   = HS_State_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
+    HS_AppData.MsgActsState         = HS_State_ENABLED;
+    HS_AppData.ExeCountState        = HS_State_ENABLED;
 
     /* Causes to enter all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), -1);
@@ -2261,14 +2270,14 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabledNoS
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_DISABLED, "HS_AppData.AppMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_DISABLED, "HS_AppData.EventMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_DISABLED, "HS_AppData.MsgActsState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_DISABLED, "HS_AppData.ExeCountState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_DISABLED, "HS_AppData.AppMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_DISABLED, "HS_AppData.EventMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_DISABLED, "HS_AppData.MsgActsState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_DISABLED, "HS_AppData.ExeCountState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_APPMON_GETADDR_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -2286,12 +2295,12 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabledNoS
 
 void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabledNoSubscribeError2(void)
 {
-    HS_AppData.AppMonLoaded         = HS_STATE_DISABLED;
-    HS_AppData.EventMonLoaded       = HS_STATE_DISABLED;
-    HS_AppData.CurrentAppMonState   = HS_STATE_ENABLED;
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
-    HS_AppData.MsgActsState         = HS_STATE_ENABLED;
-    HS_AppData.ExeCountState        = HS_STATE_ENABLED;
+    HS_AppData.AppMonLoaded         = HS_State_DISABLED;
+    HS_AppData.EventMonLoaded       = HS_State_DISABLED;
+    HS_AppData.CurrentAppMonState   = HS_State_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
+    HS_AppData.MsgActsState         = HS_State_ENABLED;
+    HS_AppData.ExeCountState        = HS_State_ENABLED;
 
     /* Causes to enter all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), -1);
@@ -2303,14 +2312,14 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabledNoS
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_DISABLED, "HS_AppData.AppMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_DISABLED, "HS_AppData.EventMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_DISABLED, "HS_AppData.MsgActsState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_DISABLED, "HS_AppData.ExeCountState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_DISABLED, "HS_AppData.AppMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_DISABLED, "HS_AppData.EventMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_DISABLED, "HS_AppData.MsgActsState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_DISABLED, "HS_AppData.ExeCountState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_APPMON_GETADDR_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -2328,13 +2337,13 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonAndCurrentEventMonEnabledNoS
 
 void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonLoadedDisabledAndCurrentAppMonStateDisabled(void)
 {
-    HS_AppData.AppMonLoaded         = HS_STATE_DISABLED;
-    HS_AppData.EventMonLoaded       = HS_STATE_DISABLED;
-    HS_AppData.CurrentAppMonState   = HS_STATE_DISABLED;
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
-    HS_AppData.MsgActsState         = HS_STATE_DISABLED;
-    HS_AppData.ExeCountState        = HS_STATE_DISABLED;
-    HS_AppData.MsgActsState         = HS_STATE_DISABLED;
+    HS_AppData.AppMonLoaded         = HS_State_DISABLED;
+    HS_AppData.EventMonLoaded       = HS_State_DISABLED;
+    HS_AppData.CurrentAppMonState   = HS_State_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
+    HS_AppData.MsgActsState         = HS_State_DISABLED;
+    HS_AppData.ExeCountState        = HS_State_DISABLED;
+    HS_AppData.MsgActsState         = HS_State_DISABLED;
 
     /* Causes to enter all (Status < CFE_SUCCESS) blocks */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), -1);
@@ -2346,14 +2355,14 @@ void HS_AcquirePointers_Test_ErrorsWithCurrentAppMonLoadedDisabledAndCurrentAppM
     HS_AcquirePointers();
 
     /* Verify results */
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.AppMonLoaded == HS_STATE_DISABLED, "HS_AppData.AppMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.EventMonLoaded == HS_STATE_DISABLED, "HS_AppData.EventMonLoaded == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.MsgActsState == HS_STATE_DISABLED, "HS_AppData.MsgActsState == HS_STATE_DISABLED");
-    UtAssert_True(HS_AppData.ExeCountState == HS_STATE_DISABLED, "HS_AppData.ExeCountState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.AppMonLoaded == HS_State_DISABLED, "HS_AppData.AppMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.EventMonLoaded == HS_State_DISABLED, "HS_AppData.EventMonLoaded == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.MsgActsState == HS_State_DISABLED, "HS_AppData.MsgActsState == HS_State_DISABLED");
+    UtAssert_True(HS_AppData.ExeCountState == HS_State_DISABLED, "HS_AppData.ExeCountState == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EVENTMON_GETADDR_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -2427,7 +2436,7 @@ void HS_AppMonStatusRefresh_Test_ActionTypeNOACT(void)
     for (i = 0; i < HS_MAX_MONITORED_APPS; i++)
     {
         HS_AppData.AMTablePtr[i].CycleCount = 1;
-        HS_AppData.AMTablePtr[i].ActionType = HS_AMT_ACT_NOACT;
+        HS_AppData.AMTablePtr[i].ActionType = HS_AMTActType_NOACT;
     }
 
     /* Execute the function being tested */

@@ -18,27 +18,37 @@
 
 /**
  * @file
- *   Specification for the CFS Health and Safety (HS) command and telemetry
- *   message data types.
+ *   Specification for the CFS Health and Safety (HS) command function codes
  *
- * This is a compatibility header for the "hs_msg.h" file that has
- * traditionally provided the message definitions for cFS apps.
- *
- * @note This file may be overridden/superceded by mission-provided definitions
- * either by overriding this header or by generating definitions from a command/data
- * dictionary tool.
+ * @note
+ *   This file should be strictly limited to the command/function code (CC)
+ *   macro definitions.  Other definitions such as enums, typedefs, or other
+ *   macros should be placed in the msgdefs.h or msg.h files.
  */
-#ifndef DEFAULT_HK_MSG_H
-#define DEFAULT_HK_MSG_H
+#ifndef DEFAULT_HS_FCNCODE_VALUES_H
+#define DEFAULT_HS_FCNCODE_VALUES_H
 
 /************************************************************************
- * THIS IS RELATED TO THE DATA TYPE USED IN 'AppMonEnable' FIELD IN THE TLM STRUCTURE
+ * Macro Definitions
  ************************************************************************/
 
-#define HS_BITS_PER_APPMON_ENABLE 32 /**< \brief HS Bits per AppMon Enable entry */
+#define HS_CCVAL(x) HS_FunctionCode_##x
 
-#include "hs_interface_cfg.h"
-#include "hs_msgdefs.h"
-#include "hs_msgstruct.h"
+enum HS_FunctionCode_
+{
+    HS_FunctionCode_NOOP                   = 0,
+    HS_FunctionCode_RESET                  = 1,
+    HS_FunctionCode_ENABLE_APP_MON         = 2,
+    HS_FunctionCode_DISABLE_APP_MON        = 3,
+    HS_FunctionCode_ENABLE_EVENT_MON       = 4,
+    HS_FunctionCode_DISABLE_EVENT_MON      = 5,
+    HS_FunctionCode_ENABLE_ALIVENESS       = 6,
+    HS_FunctionCode_DISABLE_ALIVENESS      = 7,
+    HS_FunctionCode_RESET_RESETS_PERFORMED = 8,
+    HS_FunctionCode_SET_MAX_RESETS         = 9,
+    HS_FunctionCode_ENABLE_CPU_HOG         = 10,
+    HS_FunctionCode_DISABLE_CPU_HOG        = 11,
+
+};
 
 #endif

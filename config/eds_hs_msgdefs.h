@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -19,14 +18,15 @@
 
 /**
  * @file
- *   CFS Health and Safety (HS) Application Topic IDs
+ *   Specification for the CFS Health and Safety (HS) command and telemetry
+ *   message constant definitions.
+ *
+ *  For HS this is only the function/command code definitions
  */
-#ifndef HS_TOPICIDS_H
-#define HS_TOPICIDS_H
+#ifndef EDS_HS_MSGDEFS_H
+#define EDS_HS_MSGDEFS_H
 
-#define CFE_MISSION_HS_CMD_TOPICID     0xAE /**< \brief Msg ID for cmds to HS                */
-#define CFE_MISSION_HS_SEND_HK_TOPICID 0xAF /**< \brief Msg ID to request HS housekeeping    */
-#define CFE_MISSION_HS_WAKEUP_TOPICID  0xB0 /**< \brief Msg ID to wake up HS                 */
-#define CFE_MISSION_HS_HK_TLM_TOPICID  0xAD /**< \brief HS Housekeeping Telemetry            */
+#include "hs_eds_typedefs.h"
+#include "hs_fcncodes.h"
 
 #endif

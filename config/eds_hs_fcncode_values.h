@@ -16,47 +16,24 @@
  * limitations under the License.
  ************************************************************************/
 
-/*
- * Includes
+/**
+ * @file
+ *   Specification for the CFS Health and Safety (HS) command function codes
+ *
+ * @note
+ *   This file should be strictly limited to the command/function code (CC)
+ *   macro definitions.  Other definitions such as enums, typedefs, or other
+ *   macros should be placed in the msgdefs.h or msg.h files.
  */
+#ifndef EDS_HS_FCNCODE_VALUES_H
+#define EDS_HS_FCNCODE_VALUES_H
 
-#include "hs_cmds.h"
-#include "hs_test_utils.h"
-#include "hs_dispatch.h"
-#include "hs_msgids.h"
+#include "hs_eds_cc.h"
 
-/* UT includes */
-#include "uttest.h"
-#include "utassert.h"
-#include "utstubs.h"
+/************************************************************************
+ * Macro Definitions
+ ************************************************************************/
 
-#include "cfe.h"
-#include "hs_eds_dispatcher.h"
+#define HS_CCVAL(x) EDS_CONTAINER_HS_##x##_CC
 
-/*
-**********************************************************************************
-**          TEST CASE FUNCTIONS
-**********************************************************************************
-*/
-
-void Test_HS_AppPipe(void)
-{
-    /*
-     * Test Case For:
-     * void HS_AppPipe
-     */
-    CFE_SB_Buffer_t UtBuf;
-
-    UT_SetDeferredRetcode(UT_KEY(CFE_EDSMSG_Dispatch), 1, CFE_SUCCESS);
-
-    memset(&UtBuf, 0, sizeof(UtBuf));
-    UtAssert_VOIDCALL(HS_AppPipe(&UtBuf));
-}
-
-/*
- * Register the test cases to execute with the unit test tool
- */
-void UtTest_Setup(void)
-{
-    UtTest_Add(Test_HS_AppPipe, HS_Test_Setup, HS_Test_TearDown, "Test_HS_AppPipe");
-}
+#endif
