@@ -70,20 +70,20 @@ static const EdsDispatchTable_EdsComponent_HS_Application_CFE_SB_Telecommand_t H
 /*     command pipe.                                                          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void HS_AppPipe(const CFE_SB_Buffer_t *SBBufPtr)
+void HS_AppPipe(const CFE_SB_Buffer_t *BufPtr)
 {
     CFE_Status_t      Status;
     CFE_SB_MsgId_t    MsgId;
     CFE_MSG_Size_t    MsgSize;
     CFE_MSG_FcnCode_t MsgFc;
 
-    Status = EdsDispatch_EdsComponent_HS_Application_Telecommand(SBBufPtr, &HS_TC_DISPATCH_TABLE);
+    Status = EdsDispatch_EdsComponent_HS_Application_Telecommand(BufPtr, &HS_TC_DISPATCH_TABLE);
 
     if (Status != CFE_SUCCESS)
     {
-        CFE_MSG_GetMsgId(&SBBufPtr->Msg, &MsgId);
-        CFE_MSG_GetSize(&SBBufPtr->Msg, &MsgSize);
-        CFE_MSG_GetFcnCode(&SBBufPtr->Msg, &MsgFc);
+        CFE_MSG_GetMsgId(&BufPtr->Msg, &MsgId);
+        CFE_MSG_GetSize(&BufPtr->Msg, &MsgSize);
+        CFE_MSG_GetFcnCode(&BufPtr->Msg, &MsgFc);
 
         if (Status == CFE_STATUS_UNKNOWN_MSG_ID)
         {
