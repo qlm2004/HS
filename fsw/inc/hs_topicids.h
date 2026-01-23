@@ -16,47 +16,25 @@
  * limitations under the License.
  ************************************************************************/
 
-/*
- * Includes
+/**
+ * @file
+ *   CFS Health and Safety (HS) Application Topic IDs
  */
+#ifndef HS_TOPICIDS_H
+#define HS_TOPICIDS_H
 
-#include "hs_cmds.h"
-#include "hs_test_utils.h"
-#include "hs_dispatch.h"
-#include "hs_msgids.h"
+#include "hs_topicid_values.h"
 
-/* UT includes */
-#include "uttest.h"
-#include "utassert.h"
-#include "utstubs.h"
+#define CFE_MISSION_HS_CMD_TOPICID             CFE_MISSION_HS_TIDVAL(CMD)
+#define DEFAULT_CFE_MISSION_HS_CMD_TOPICID     0xAE /**< \brief Msg ID for cmds to HS                */
 
-#include "cfe.h"
-#include "hs_eds_dispatcher.h"
+#define CFE_MISSION_HS_SEND_HK_TOPICID         CFE_MISSION_HS_TIDVAL(SEND_HK)
+#define DEFAULT_CFE_MISSION_HS_SEND_HK_TOPICID 0xAF /**< \brief Msg ID to request HS housekeeping    */
 
-/*
-**********************************************************************************
-**          TEST CASE FUNCTIONS
-**********************************************************************************
-*/
+#define CFE_MISSION_HS_WAKEUP_TOPICID          CFE_MISSION_HS_TIDVAL(WAKEUP)
+#define DEFAULT_CFE_MISSION_HS_WAKEUP_TOPICID  0xB0 /**< \brief Msg ID to wake up HS                 */
 
-void Test_HS_AppPipe(void)
-{
-    /*
-     * Test Case For:
-     * void HS_AppPipe
-     */
-    CFE_SB_Buffer_t UtBuf;
+#define CFE_MISSION_HS_HK_TLM_TOPICID          CFE_MISSION_HS_TIDVAL(HK_TLM)
+#define DEFAULT_CFE_MISSION_HS_HK_TLM_TOPICID  0xAD /**< \brief HS Housekeeping Telemetry            */
 
-    UT_SetDeferredRetcode(UT_KEY(CFE_EDSMSG_Dispatch), 1, CFE_SUCCESS);
-
-    memset(&UtBuf, 0, sizeof(UtBuf));
-    UtAssert_VOIDCALL(HS_AppPipe(&UtBuf));
-}
-
-/*
- * Register the test cases to execute with the unit test tool
- */
-void UtTest_Setup(void)
-{
-    UtTest_Add(Test_HS_AppPipe, HS_Test_Setup, HS_Test_TearDown, "Test_HS_AppPipe");
-}
+#endif

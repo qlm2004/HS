@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -34,38 +33,38 @@
 HS_AMTEntry_t HS_AppMon_Tbl[HS_MAX_MONITORED_APPS] = {
     /*          AppName                    NullTerm CycleCount     ActionType */
 
-    /*   0 */ {"CFE_ES", 0, 10, HS_AMT_ACT_NOACT},
-    /*   1 */ {"CFE_EVS", 0, 10, HS_AMT_ACT_NOACT},
-    /*   2 */ {"CFE_TIME", 0, 10, HS_AMT_ACT_NOACT},
-    /*   3 */ {"CFE_TBL", 0, 10, HS_AMT_ACT_NOACT},
-    /*   4 */ {"CFE_SB", 0, 10, HS_AMT_ACT_NOACT},
-    /*   5 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*   6 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*   7 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*   8 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*   9 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  10 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  11 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  12 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  13 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  14 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  15 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  16 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  17 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  18 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  19 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  20 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  21 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  22 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  23 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  24 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  25 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  26 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  27 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  28 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  29 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  30 */ {"", 0, 10, HS_AMT_ACT_NOACT},
-    /*  31 */ {"", 0, 10, HS_AMT_ACT_NOACT},
+    /*   0 */ {"CFE_ES", 0, 10, HS_AMTActType_NOACT},
+    /*   1 */ {"CFE_EVS", 0, 10, HS_AMTActType_NOACT},
+    /*   2 */ {"CFE_TIME", 0, 10, HS_AMTActType_NOACT},
+    /*   3 */ {"CFE_TBL", 0, 10, HS_AMTActType_NOACT},
+    /*   4 */ {"CFE_SB", 0, 10, HS_AMTActType_NOACT},
+    /*   5 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*   6 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*   7 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*   8 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*   9 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  10 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  11 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  12 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  13 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  14 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  15 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  16 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  17 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  18 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  19 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  20 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  21 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  22 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  23 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  24 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  25 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  26 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  27 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  28 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  29 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  30 */ {"", 0, 10, HS_AMTActType_NOACT},
+    /*  31 */ {"", 0, 10, HS_AMTActType_NOACT},
 };
 
 CFE_TBL_FILEDEF(HS_AppMon_Tbl, HS.AppMon_Tbl, HS AppMon Table, hs_amt.tbl)

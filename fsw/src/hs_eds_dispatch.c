@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -40,7 +39,7 @@
 /*
  * Define a lookup table for SAMPLE app command codes
  */
-static const EdsDispatchTable_HS_Application_CFE_SB_Telecommand_t HS_TC_DISPATCH_TABLE =
+static const EdsDispatchTable_EdsComponent_HS_Application_CFE_SB_Telecommand_t HS_TC_DISPATCH_TABLE =
 {
     .CMD =
     {
@@ -71,20 +70,20 @@ static const EdsDispatchTable_HS_Application_CFE_SB_Telecommand_t HS_TC_DISPATCH
 /*     command pipe.                                                          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void HS_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
+void HS_AppPipe(const CFE_SB_Buffer_t *BufPtr)
 {
     CFE_Status_t      Status;
     CFE_SB_MsgId_t    MsgId;
     CFE_MSG_Size_t    MsgSize;
     CFE_MSG_FcnCode_t MsgFc;
 
-    Status = EdsDispatch_HS_Application_Telecommand(SBBufPtr, &HS_TC_DISPATCH_TABLE);
+    Status = EdsDispatch_EdsComponent_HS_Application_Telecommand(BufPtr, &HS_TC_DISPATCH_TABLE);
 
     if (Status != CFE_SUCCESS)
     {
-        CFE_MSG_GetMsgId(&SBBufPtr->Msg, &MsgId);
-        CFE_MSG_GetSize(&SBBufPtr->Msg, &MsgSize);
-        CFE_MSG_GetFcnCode(&SBBufPtr->Msg, &MsgFc);
+        CFE_MSG_GetMsgId(&BufPtr->Msg, &MsgId);
+        CFE_MSG_GetSize(&BufPtr->Msg, &MsgSize);
+        CFE_MSG_GetFcnCode(&BufPtr->Msg, &MsgFc);
 
         if (Status == CFE_STATUS_UNKNOWN_MSG_ID)
         {

@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -43,7 +42,7 @@ uint8 call_count_CFE_EVS_SendEvent;
 
 void HS_AMTActionIsValid_Valid(void)
 {
-    uint16 Action = (HS_AMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES);
+    uint16 Action = (HS_AMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES);
 
     bool Result = HS_AMTActionIsValid(Action);
 
@@ -52,7 +51,7 @@ void HS_AMTActionIsValid_Valid(void)
 
 void HS_AMTActionIsValid_Invalid(void)
 {
-    uint16 Action = (HS_AMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1);
+    uint16 Action = (HS_AMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1);
 
     bool Result = HS_AMTActionIsValid(Action);
 
@@ -61,7 +60,7 @@ void HS_AMTActionIsValid_Invalid(void)
 
 void HS_EMTActionIsValid_Valid(void)
 {
-    uint16 Action = (HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES);
+    uint16 Action = (HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES);
 
     bool Result = HS_EMTActionIsValid(Action);
 
@@ -70,7 +69,7 @@ void HS_EMTActionIsValid_Valid(void)
 
 void HS_EMTActionIsValid_Invalid(void)
 {
-    uint16 Action = (HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1);
+    uint16 Action = (HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1);
 
     bool Result = HS_EMTActionIsValid(Action);
 

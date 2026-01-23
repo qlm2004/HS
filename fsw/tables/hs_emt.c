@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -37,20 +36,20 @@ CFE_TBL_FileDef_t CFE_TBL_FileDef = {"HS_EventMon_Tbl", HS_APP_NAME ".EventMon_T
 HS_EMTEntry_t HS_EventMon_Tbl[HS_MAX_MONITORED_EVENTS] = {
     /*          AppName                    NullTerm EventID        ActionType */
 
-    /*   0 */ {"CFE_ES", 0, 10, HS_EMT_ACT_NOACT},
-    /*   1 */ {"CFE_EVS", 0, 10, HS_EMT_ACT_NOACT},
-    /*   2 */ {"CFE_TIME", 0, 10, HS_EMT_ACT_NOACT},
-    /*   3 */ {"CFE_TBL", 0, 10, HS_EMT_ACT_NOACT},
-    /*   4 */ {"CFE_SB", 0, 10, HS_EMT_ACT_NOACT},
-    /*   5 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*   6 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*   7 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*   8 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*   9 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*  10 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*  11 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*  12 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*  13 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*  14 */ {"", 0, 10, HS_EMT_ACT_NOACT},
-    /*  15 */ {"", 0, 10, HS_EMT_ACT_NOACT},
+    /*   0 */ {"CFE_ES", 0, 10, HS_EMTActType_NOACT},
+    /*   1 */ {"CFE_EVS", 0, 10, HS_EMTActType_NOACT},
+    /*   2 */ {"CFE_TIME", 0, 10, HS_EMTActType_NOACT},
+    /*   3 */ {"CFE_TBL", 0, 10, HS_EMTActType_NOACT},
+    /*   4 */ {"CFE_SB", 0, 10, HS_EMTActType_NOACT},
+    /*   5 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*   6 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*   7 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*   8 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*   9 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*  10 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*  11 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*  12 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*  13 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*  14 */ {"", 0, 10, HS_EMTActType_NOACT},
+    /*  15 */ {"", 0, 10, HS_EMTActType_NOACT},
 };

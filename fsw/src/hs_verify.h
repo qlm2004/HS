@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -186,28 +185,28 @@
 /*
  * Default Application Monitor State
  */
-#if (HS_APPMON_DEFAULT_STATE != HS_STATE_DISABLED) && (HS_APPMON_DEFAULT_STATE != HS_STATE_ENABLED)
+#if (HS_APPMON_DEFAULT_STATE != HS_State_DISABLED) && (HS_APPMON_DEFAULT_STATE != HS_State_ENABLED)
 #error HS_APPMON_DEFAULT_STATE not defined as a supported enumerated type
 #endif
 
 /*
  * Default Event Monitor State
  */
-#if (HS_EVENTMON_DEFAULT_STATE != HS_STATE_DISABLED) && (HS_EVENTMON_DEFAULT_STATE != HS_STATE_ENABLED)
+#if (HS_EVENTMON_DEFAULT_STATE != HS_State_DISABLED) && (HS_EVENTMON_DEFAULT_STATE != HS_State_ENABLED)
 #error HS_EVENTMON_DEFAULT_STATE not defined as a supported enumerated type
 #endif
 
 /*
  * Default Aliveness Indicator State
  */
-#if (HS_ALIVENESS_DEFAULT_STATE != HS_STATE_DISABLED) && (HS_ALIVENESS_DEFAULT_STATE != HS_STATE_ENABLED)
+#if (HS_ALIVENESS_DEFAULT_STATE != HS_State_DISABLED) && (HS_ALIVENESS_DEFAULT_STATE != HS_State_ENABLED)
 #error HS_ALIVENESS_DEFAULT_STATE not defined as a supported enumerated type
 #endif
 
 /*
  * Default CPU Hogging Indicator State
  */
-#if (HS_CPUHOG_DEFAULT_STATE != HS_STATE_DISABLED) && (HS_CPUHOG_DEFAULT_STATE != HS_STATE_ENABLED)
+#if (HS_CPUHOG_DEFAULT_STATE != HS_State_DISABLED) && (HS_CPUHOG_DEFAULT_STATE != HS_State_ENABLED)
 #error HS_CPUHOG_DEFAULT_STATE not defined as a supported enumerated type
 #endif
 

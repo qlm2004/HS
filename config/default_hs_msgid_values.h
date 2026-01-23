@@ -16,47 +16,17 @@
  * limitations under the License.
  ************************************************************************/
 
-/*
- * Includes
+/**
+ * @file
+ *   CFS Health and Safety (HS) Application Message IDs
  */
+#ifndef DEFAULT_HS_MSGID_VALUES_H
+#define DEFAULT_HS_MSGID_VALUES_H
 
-#include "hs_cmds.h"
-#include "hs_test_utils.h"
-#include "hs_dispatch.h"
-#include "hs_msgids.h"
+#include "cfe_core_api_base_msgids.h"
+#include "hs_topicids.h"
 
-/* UT includes */
-#include "uttest.h"
-#include "utassert.h"
-#include "utstubs.h"
+#define CFE_PLATFORM_HS_CMD_MIDVAL(x) CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_HS_##x##_TOPICID)
+#define CFE_PLATFORM_HS_TLM_MIDVAL(x) CFE_PLATFORM_TLM_TOPICID_TO_MIDV(CFE_MISSION_HS_##x##_TOPICID)
 
-#include "cfe.h"
-#include "hs_eds_dispatcher.h"
-
-/*
-**********************************************************************************
-**          TEST CASE FUNCTIONS
-**********************************************************************************
-*/
-
-void Test_HS_AppPipe(void)
-{
-    /*
-     * Test Case For:
-     * void HS_AppPipe
-     */
-    CFE_SB_Buffer_t UtBuf;
-
-    UT_SetDeferredRetcode(UT_KEY(CFE_EDSMSG_Dispatch), 1, CFE_SUCCESS);
-
-    memset(&UtBuf, 0, sizeof(UtBuf));
-    UtAssert_VOIDCALL(HS_AppPipe(&UtBuf));
-}
-
-/*
- * Register the test cases to execute with the unit test tool
- */
-void UtTest_Setup(void)
-{
-    UtTest_Add(Test_HS_AppPipe, HS_Test_Setup, HS_Test_TearDown, "Test_HS_AppPipe");
-}
+#endif

@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -134,7 +133,7 @@ int32 HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1(void *UserObj, int32 StubRetcod
     /* This functionality is not directly related to WaitForStartupSync, but WaitForStartupSync is in a place where
        it's necessary to do this for the test case HS_AppMain_Test_Nominal */
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
 
     return 0;
 }
@@ -145,7 +144,7 @@ int32 HS_APP_TEST_CFE_EVS_RegisterHook(void *UserObj, int32 StubRetcode, uint32 
     /* HS_AppInit sets CurrentEventMonState to HS_APPMON_DEFAULT_STATE, so change it to disabled at
        call to CF_EVS_RegisterHook */
 
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
 
     return 0;
 }
@@ -170,16 +169,16 @@ void HS_AppMain_Test_NominalWaitForStartupSync(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_NO_MESSAGE);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
-    HS_AppData.CurrentEventMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentEventMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     HS_AppMain();
 
     /* Verify results */
-    UtAssert_UINT8_EQ(HS_AppData.CurrentEventMonState, HS_STATE_ENABLED);
+    UtAssert_UINT8_EQ(HS_AppData.CurrentEventMonState, HS_State_ENABLED);
 
     /* This verifies HS8006 and HS8006.1 to wait for startup sync with platform defined timeout */
     UtAssert_STUB_COUNT(CFE_ES_WaitForStartupSync, 1);
@@ -198,7 +197,7 @@ void HS_AppMain_Test_NominalRcvMsgSuccess(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_NO_MESSAGE);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Used to verify completion of HS_AppMain by incrementing HS_AppData.EventsMonitoredCount. */
@@ -230,7 +229,7 @@ void HS_AppMain_Test_NominalRcvMsgNoMessage(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Used to verify completion of HS_AppMain by incrementing HS_AppData.EventsMonitoredCount. */
@@ -262,7 +261,7 @@ void HS_AppMain_Test_NominalRcvMsgTimeOut(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Used to verify completion of HS_AppMain by incrementing HS_AppData.EventsMonitoredCount. */
@@ -289,7 +288,7 @@ void HS_AppMain_Test_NominalRcvMsgError(void)
     /* Set return code being tested, to bypass "Status = HS_ProcessMain()" as one of the nominal cases */
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), -1);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Used to verify completion of HS_AppMain by incrementing HS_AppData.EventsMonitoredCount. */
@@ -329,7 +328,7 @@ void HS_AppMain_Test_AppInitNotSuccess(void)
     /* Same return value as default, but bypasses default hook function to make test easier to write */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, -1);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Set CFE_EVS_Register to return -1 in order to reach call to CFE_ES_WriteToSysLog */
@@ -370,7 +369,7 @@ void HS_AppMain_Test_ProcessMainNotSuccess(void)
        return -1 by making its call to CFE_SB_ReceiveBuffer return -1 */
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), -1);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Execute the function being tested */
@@ -408,7 +407,7 @@ void HS_AppMain_Test_SBSubscribeEVSLongError(void)
     /* Same return value as default, but bypasses default hook function to make test easier to write */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Set CFE_SB_SubscribeEx to return -1 in order to generate error message HS_SUB_EVS_ERR_EID */
@@ -464,7 +463,7 @@ void HS_AppMain_Test_SBSubscribeEVSShortError(void)
     /* Same return value as default, but bypasses default hook function to make test easier to write */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Set CFE_SB_SubscribeEx to return -1 in order to generate error message HS_SUB_EVS_ERR_EID */
@@ -518,7 +517,7 @@ void HS_AppMain_Test_RcvMsgError(void)
     /* Set RcvMsg to return -1 in order to reach "RunStatus = CFE_ES_APP_ERROR" */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, -1);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_ENABLED (because set to 0 inside HS_AppMain) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_ENABLED (because set to 0 inside HS_AppMain) */
     UT_SetHookFunction(UT_KEY(CFE_ES_WaitForStartupSync), HS_APP_TEST_CFE_ES_WaitForStartupSyncHook1, NULL);
 
     /* Execute the function being tested */
@@ -552,7 +551,7 @@ void HS_AppMain_Test_StateDisabled(void)
     /* Same return value as default, but bypasses default hook function to make test easier to write */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
 
-    /* Sets HS_AppData.CurrentEventMonState = HS_STATE_DISABLED (because set to 1 inside HS_AppInit) */
+    /* Sets HS_AppData.CurrentEventMonState = HS_State_DISABLED (because set to 1 inside HS_AppInit) */
     UT_SetHookFunction(UT_KEY(CFE_EVS_Register), HS_APP_TEST_CFE_EVS_RegisterHook, NULL);
 
     /* Execute the function being tested */
@@ -595,8 +594,8 @@ void HS_AppInit_Test_Nominal(void)
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -651,8 +650,8 @@ void HS_AppInit_Test_EVSRegisterError(void)
     /* Verify results */
     UtAssert_True(Result == -1, "Result == -1");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -713,8 +712,8 @@ void HS_AppInit_Test_CorruptCDSResetsPerformed(void)
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -787,8 +786,8 @@ void HS_AppInit_Test_CorruptCDSMaxResets(void)
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -853,8 +852,8 @@ void HS_AppInit_Test_CorruptCDSNoEvent(void)
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -955,10 +954,10 @@ void HS_AppInit_Test_DisableSavingToCDS(void)
 
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
-    UtAssert_True(HS_AppData.CDSState == HS_STATE_DISABLED, "HS_AppData.CDSState == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.CDSState == HS_State_DISABLED, "HS_AppData.CDSState == HS_State_DISABLED");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -1012,8 +1011,8 @@ void HS_AppInit_Test_SBInitError(void)
     /* Verify results */
     UtAssert_True(Result == -1, "Result == -1");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -1069,8 +1068,8 @@ void HS_AppInit_Test_TblInitError(void)
     /* Verify results */
     UtAssert_True(Result == -1, "Result == -1");
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -1117,8 +1116,8 @@ void HS_AppInit_Test_CustomInitError(void)
     /* Execute the function being tested */
     UtAssert_INT32_EQ(HS_AppInit(), -1);
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_ENABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_ENABLED");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
     UtAssert_True(HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN, "HS_AppData.RunStatus == CFE_ES_RunStatus_APP_RUN");
     UtAssert_True(HS_AppData.EventsMonitoredCount == 0, "HS_AppData.EventsMonitoredCount == 0");
@@ -1549,7 +1548,7 @@ void HS_TblInit_Test_LoadExeCountTableError(void)
 
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
-    /* Note: not verifying that HS_AppData.ExeCountState == HS_STATE_DISABLED, because HS_AppData.ExeCountState is
+    /* Note: not verifying that HS_AppData.ExeCountState == HS_State_DISABLED, because HS_AppData.ExeCountState is
      * modified by HS_AcquirePointers at the end of HS_TblInit */
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCT_LD_ERR_EID);
@@ -1584,9 +1583,9 @@ void HS_TblInit_Test_LoadAppMonTableError(void)
 
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
-    UtAssert_True(HS_AppData.CurrentAppMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentAppMonState == HS_STATE_DISABLED");
-    /* Note: not verifying that HS_AppData.AppMonLoaded == HS_STATE_DISABLED, because HS_AppData.AppMonLoaded is
+    UtAssert_True(HS_AppData.CurrentAppMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentAppMonState == HS_State_DISABLED");
+    /* Note: not verifying that HS_AppData.AppMonLoaded == HS_State_DISABLED, because HS_AppData.AppMonLoaded is
      * modified by HS_AcquirePointers at the end of HS_TblInit */
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMT_LD_ERR_EID);
@@ -1629,9 +1628,9 @@ void HS_TblInit_Test_LoadEventMonTableError(void)
 
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
-    UtAssert_True(HS_AppData.CurrentEventMonState == HS_STATE_DISABLED,
-                  "HS_AppData.CurrentEventMonState == HS_STATE_DISABLED");
-    /* Note: not verifying that HS_AppData.EventMonLoaded == HS_STATE_DISABLED, because HS_AppData.EventMonLoaded is
+    UtAssert_True(HS_AppData.CurrentEventMonState == HS_State_DISABLED,
+                  "HS_AppData.CurrentEventMonState == HS_State_DISABLED");
+    /* Note: not verifying that HS_AppData.EventMonLoaded == HS_State_DISABLED, because HS_AppData.EventMonLoaded is
      * modified by HS_AcquirePointers at the end of HS_TblInit */
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMT_LD_ERR_EID);
@@ -1672,7 +1671,7 @@ void HS_TblInit_Test_LoadMsgActsTableError(void)
 
     /* Verify results */
     UtAssert_True(Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
-    /* Note: not verifying that HS_AppData.MsgActsState == HS_STATE_DISABLED, because HS_AppData.MsgActsState is
+    /* Note: not verifying that HS_AppData.MsgActsState == HS_State_DISABLED, because HS_AppData.MsgActsState is
      * modified by HS_AcquirePointers at the end of HS_TblInit */
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MAT_LD_ERR_EID);
@@ -1707,10 +1706,10 @@ void HS_ProcessMain_Test(void)
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES / 2] = 2;
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES - 1] = 2;
 
-    HS_AppData.CurrentAppMonState    = HS_STATE_ENABLED;
-    HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAppMonState    = HS_State_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
     HS_AppData.AlivenessCounter      = HS_CPU_ALIVE_PERIOD;
-    HS_AppData.ServiceWatchdogFlag   = HS_STATE_ENABLED;
+    HS_AppData.ServiceWatchdogFlag   = HS_State_ENABLED;
 
     /* Execute the function being tested */
     Result = HS_ProcessMain();
@@ -1726,7 +1725,7 @@ void HS_ProcessMain_Test(void)
                   "HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES - 1] == 1");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
 
-    /* Ensure the watchdog was serviced when flag is HS_STATE_ENABLED */
+    /* Ensure the watchdog was serviced when flag is HS_State_ENABLED */
     UtAssert_STUB_COUNT(CFE_PSP_WatchdogService, 1);
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
@@ -1753,13 +1752,13 @@ void HS_ProcessMain_Test_MonStateDisabled(void)
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES / 2] = 2;
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES - 1] = 2;
 
-    HS_AppData.CurrentAppMonState    = HS_STATE_ENABLED;
-    HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAppMonState    = HS_State_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
     HS_AppData.AlivenessCounter      = HS_CPU_ALIVE_PERIOD;
-    HS_AppData.ServiceWatchdogFlag   = HS_STATE_ENABLED;
+    HS_AppData.ServiceWatchdogFlag   = HS_State_ENABLED;
 
     /* Prevent HS_MonitorApplications() from executing */
-    HS_AppData.CurrentAppMonState = HS_STATE_DISABLED;
+    HS_AppData.CurrentAppMonState = HS_State_DISABLED;
 
     /* Execute the function being tested */
     Result = HS_ProcessMain();
@@ -1799,11 +1798,11 @@ void HS_ProcessMain_Test_AlivenessDisabled(void)
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES / 2] = 2;
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES - 1] = 2;
 
-    HS_AppData.CurrentAppMonState    = HS_STATE_ENABLED;
-    HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAppMonState    = HS_State_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
     HS_AppData.AlivenessCounter      = HS_CPU_ALIVE_PERIOD;
-    HS_AppData.CurrentAlivenessState = HS_STATE_DISABLED;
-    HS_AppData.ServiceWatchdogFlag   = HS_STATE_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_DISABLED;
+    HS_AppData.ServiceWatchdogFlag   = HS_State_ENABLED;
 
     /* Execute the function being tested */
     Result = HS_ProcessMain();
@@ -1844,12 +1843,12 @@ void HS_ProcessMain_Test_WatchdogDisabled(void)
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES / 2] = 2;
     HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES - 1] = 2;
 
-    HS_AppData.CurrentAppMonState    = HS_STATE_ENABLED;
-    HS_AppData.CurrentAlivenessState = HS_STATE_ENABLED;
+    HS_AppData.CurrentAppMonState    = HS_State_ENABLED;
+    HS_AppData.CurrentAlivenessState = HS_State_ENABLED;
     HS_AppData.AlivenessCounter      = HS_CPU_ALIVE_PERIOD;
-    HS_AppData.ServiceWatchdogFlag   = HS_STATE_ENABLED;
+    HS_AppData.ServiceWatchdogFlag   = HS_State_ENABLED;
 
-    HS_AppData.ServiceWatchdogFlag = HS_STATE_DISABLED;
+    HS_AppData.ServiceWatchdogFlag = HS_State_DISABLED;
 
     /* Execute the function being tested */
     Result = HS_ProcessMain();
@@ -1865,7 +1864,7 @@ void HS_ProcessMain_Test_WatchdogDisabled(void)
                   "HS_AppData.MsgActCooldown[HS_MAX_MSG_ACT_TYPES - 1] == 1");
     UtAssert_True(HS_AppData.AlivenessCounter == 0, "HS_AppData.AlivenessCounter == 0");
 
-    /* Ensure the watchdog was not serviced when flag is HS_STATE_DISABLED */
+    /* Ensure the watchdog was not serviced when flag is HS_State_DISABLED */
     UtAssert_STUB_COUNT(CFE_PSP_WatchdogService, 0);
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
@@ -1883,7 +1882,7 @@ void HS_ProcessCommands_Test(void)
     HS_EMTEntry_t EMTable[HS_MAX_MONITORED_EVENTS];
     uint8         call_count_HS_MonitorEvent;
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
     HS_AppData.EMTablePtr           = EMTable;
 
     HS_AppData.EventsMonitoredCount = 0;
@@ -1944,7 +1943,7 @@ void HS_ProcessCommands_Test_NullMsgPtr(void)
     uint8         call_count_HS_AppPipe           = 0;
     HS_EMTEntry_t EMTable[HS_MAX_MONITORED_EVENTS];
 
-    HS_AppData.CurrentEventMonState = HS_STATE_ENABLED;
+    HS_AppData.CurrentEventMonState = HS_State_ENABLED;
     HS_AppData.EMTablePtr           = EMTable;
 
     HS_AppData.EventsMonitoredCount = 0;

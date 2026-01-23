@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -638,7 +637,7 @@
  *  This event message is issued when a table validation has been
  *  completed for an application monitor table load
  */
-#define HS_AMTVAL_INF_EID 50
+#define HS_AMTVal_INF_EID 50
 
 /**
  * \brief HS AppMon Table Verification Failed Results Event ID
@@ -650,7 +649,7 @@
  *  This event message is issued on the first error when a table validation
  *  fails for an application monitor table load.
  */
-#define HS_AMTVAL_ERR_EID 51
+#define HS_AMTVal_ERR_EID 51
 
 /**
  * \brief HS EventMon Table Verification Results Event ID
@@ -662,7 +661,7 @@
  *  This event message is issued when a table validation has been
  *  completed for an event monitor table load
  */
-#define HS_EMTVAL_INF_EID 52
+#define HS_EMTVal_INF_EID 52
 
 /**
  * \brief HS EventMon Table Verification Failed Event ID
@@ -674,7 +673,7 @@
  *  This event message is issued on the first error when a table validation
  *  fails for an event monitor table load.
  */
-#define HS_EMTVAL_ERR_EID 53
+#define HS_EMTVal_ERR_EID 53
 
 /**
  * \brief HS ExeCount Table Verification Results Event ID
@@ -686,7 +685,7 @@
  *  This event message is issued when a table validation has been
  *  completed for an execution counters table load
  */
-#define HS_XCTVAL_INF_EID 54
+#define HS_XCTVal_INF_EID 54
 
 /**
  * \brief HS ExeCount Table Verification Failed Event ID
@@ -698,7 +697,7 @@
  *  This event message is issued on the first error when a table validation
  *  fails for an execution counter table load.
  */
-#define HS_XCTVAL_ERR_EID 55
+#define HS_XCTVal_ERR_EID 55
 
 /**
  * \brief HS MsgActs Table Verification Results Event ID
@@ -710,7 +709,7 @@
  *  This event message is issued when a table validation has been
  *  completed for a message actions table load
  */
-#define HS_MATVAL_INF_EID 56
+#define HS_MATVal_INF_EID 56
 
 /**
  * \brief HS MsgActs Table Verification Failed Event ID
@@ -722,7 +721,7 @@
  *  This event message is issued on the first error when a table validation
  *  fails for a message actions table load.
  */
-#define HS_MATVAL_ERR_EID 57
+#define HS_MATVal_ERR_EID 57
 
 /**
  * \brief HS Application Monitoring Disabled Due To Table Load Failure Event ID

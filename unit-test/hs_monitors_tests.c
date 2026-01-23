@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -176,7 +175,7 @@ void HS_MonitorApplications_Test_ProcessorResetError(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_PROC_RESET;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_PROC_RESET;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -199,8 +198,8 @@ void HS_MonitorApplications_Test_ProcessorResetError(void)
     UtAssert_True(HS_AppData.AppMonCheckInCountdown[0] == 0, "HS_AppData.AppMonCheckInCountdown[0] == 0 %u",
                   HS_AppData.AppMonCheckInCountdown[0]);
     UtAssert_UINT32_EQ(HS_AppData.AppMonEnables[0], 0);
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_DISABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_DISABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_DISABLED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_APPMON_PROC_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -235,7 +234,7 @@ void HS_MonitorApplications_Test_ProcessorResetActionLimitError(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_PROC_RESET;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_PROC_RESET;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -295,7 +294,7 @@ void HS_MonitorApplications_Test_RestartAppErrorsGetAppInfoSuccess(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_APP_RESTART;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_APP_RESTART;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -355,7 +354,7 @@ void HS_MonitorApplications_Test_RestartAppErrorsGetAppInfoNotSuccess(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_APP_RESTART;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_APP_RESTART;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -405,7 +404,7 @@ void HS_MonitorApplications_Test_RestartAppRestartSuccess(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_APP_RESTART;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_APP_RESTART;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -448,7 +447,7 @@ void HS_MonitorApplications_Test_FailError(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_EVENT;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_EVENT;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -500,10 +499,10 @@ void HS_MonitorApplications_Test_MsgActsNOACT(void)
     HS_AppData.MATablePtr = MATable;
 
     HS_AppData.AMTablePtr[0].ActionType =
-        HS_AMT_ACT_NOACT; /* Causes most of the function to be skipped, due to first if-statement */
+        HS_AMTActType_NOACT; /* Causes most of the function to be skipped, due to first if-statement */
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -515,8 +514,8 @@ void HS_MonitorApplications_Test_MsgActsNOACT(void)
     HS_AppData.AppMonLastExeCount[0] = 3;
 
     HS_AppData.AppMonEnables[0]          = 1;
-    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_ENABLED;
+    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_ENABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 1;
 
     /* Execute the function being tested */
@@ -547,10 +546,10 @@ void HS_MonitorApplications_Test_MsgActsNOACTDisabled(void)
     HS_AppData.MATablePtr = MATable;
 
     HS_AppData.AMTablePtr[0].ActionType =
-        HS_AMT_ACT_NOACT; /* Causes most of the function to be skipped, due to first if-statement */
+        HS_AMTActType_NOACT; /* Causes most of the function to be skipped, due to first if-statement */
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_DISABLED;
+    HS_AppData.MsgActsState              = HS_State_DISABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -562,8 +561,8 @@ void HS_MonitorApplications_Test_MsgActsNOACTDisabled(void)
     HS_AppData.AppMonLastExeCount[0] = 3;
 
     HS_AppData.AppMonEnables[0]          = 1;
-    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_ENABLED;
+    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_ENABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 1;
 
     /* Execute the function being tested */
@@ -598,12 +597,12 @@ void HS_MonitorApplications_Test_MsgActsErrorDefault(void)
     HS_AppData.AMTablePtr = AMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_LAST_NONMSG + 1;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -612,8 +611,8 @@ void HS_MonitorApplications_Test_MsgActsErrorDefault(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppInfo), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppIDByName), 1, CFE_SUCCESS);
 
-    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_ENABLED;
+    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_ENABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 1;
 
     /* Execute the function being tested */
@@ -657,12 +656,12 @@ void HS_MonitorApplications_Test_MsgActsErrorDisabled(void)
     HS_AppData.AMTablePtr = AMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -671,8 +670,8 @@ void HS_MonitorApplications_Test_MsgActsErrorDisabled(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppInfo), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppIDByName), 1, CFE_SUCCESS);
 
-    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_ENABLED;
+    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_ENABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 1;
 
     /* Execute the function being tested */
@@ -708,12 +707,12 @@ void HS_MonitorApplications_Test_MsgActsErrorDefaultCoolDown(void)
     HS_AppData.AMTablePtr = AMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_LAST_NONMSG + 1;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -722,8 +721,8 @@ void HS_MonitorApplications_Test_MsgActsErrorDefaultCoolDown(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppInfo), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppIDByName), 1, CFE_SUCCESS);
 
-    HS_AppData.MsgActCooldown[0]         = 1; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_ENABLED;
+    HS_AppData.MsgActCooldown[0]         = 1; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_ENABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 0;
 
     /* Execute the function being tested */
@@ -759,12 +758,12 @@ void HS_MonitorApplications_Test_MsgActsErrorDefaultDisabled(void)
     HS_AppData.AMTablePtr = AMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_LAST_NONMSG + 1;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -773,8 +772,8 @@ void HS_MonitorApplications_Test_MsgActsErrorDefaultDisabled(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppInfo), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppIDByName), 1, CFE_SUCCESS);
 
-    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_DISABLED;
+    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_DISABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 0;
 
     /* Execute the function being tested */
@@ -810,12 +809,12 @@ void HS_MonitorApplications_Test_MsgActsErrorDefaultNoEvent(void)
     HS_AppData.AMTablePtr = AMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_LAST_NONMSG + 1;
     HS_AppData.AppMonCheckInCountdown[0] = 1;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
     HS_AppData.AMTablePtr[0].CycleCount  = 1;
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
 
     strncpy(HS_AppData.AMTablePtr[0].AppName, "AppName", 10);
 
@@ -824,8 +823,8 @@ void HS_MonitorApplications_Test_MsgActsErrorDefaultNoEvent(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppInfo), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetAppIDByName), 1, CFE_SUCCESS);
 
-    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMT_ACT_LAST_NONMSG + 1) - HS_AMT_ACT_LAST_NONMSG - 1 = 0 */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_NOEVENT;
+    HS_AppData.MsgActCooldown[0]         = 0; /* (HS_AMTActType_LAST_NONMSG + 1) - HS_AMTActType_LAST_NONMSG - 1 = 0 */
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_NOEVENT;
     HS_AppData.MATablePtr[0].Cooldown    = 1;
 
     /* Execute the function being tested */
@@ -852,7 +851,7 @@ void HS_MonitorApplications_CheckInCountdownNotZero(void)
 
     HS_AppData.AMTablePtr = AMTable;
 
-    HS_AppData.AMTablePtr[0].ActionType  = HS_AMT_ACT_EVENT;
+    HS_AppData.AMTablePtr[0].ActionType  = HS_AMTActType_EVENT;
     HS_AppData.AppMonCheckInCountdown[0] = 2;
     HS_AppData.AppMonLastExeCount[0]     = 0;
     HS_AppData.AppMonEnables[0]          = 1;
@@ -897,7 +896,7 @@ void HS_MonitorEvent_Test_AppName(void)
     HS_AppData.MATablePtr = MATable;
 
     /* Active table entry where AppName does not match event */
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_PROC_RESET;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_PROC_RESET;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
     HS_AppData.CDSData.MaxResets        = 10;
     HS_AppData.CDSData.ResetsPerformed  = 1;
@@ -905,7 +904,7 @@ void HS_MonitorEvent_Test_AppName(void)
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
 
     /* Active table entry where event doesn't match */
-    HS_AppData.EMTablePtr[1].ActionType = HS_EMT_ACT_PROC_RESET;
+    HS_AppData.EMTablePtr[1].ActionType = HS_EMTActType_PROC_RESET;
 
     /* Execute the function being tested */
     HS_MonitorEvent(&Packet);
@@ -942,7 +941,7 @@ void HS_MonitorEvent_Test_ProcErrorReset(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_PROC_RESET;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_PROC_RESET;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
     HS_AppData.CDSData.MaxResets        = 10;
     HS_AppData.CDSData.ResetsPerformed  = 1;
@@ -970,8 +969,8 @@ void HS_MonitorEvent_Test_ProcErrorReset(void)
 
     UtAssert_True(strCmpResult == 0, "Sys Log string matched expected result, '%s'", context_CFE_ES_WriteToSysLog.Spec);
 
-    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_STATE_DISABLED,
-                  "HS_AppData.ServiceWatchdogFlag == HS_STATE_DISABLED");
+    UtAssert_True(HS_AppData.ServiceWatchdogFlag == HS_State_DISABLED,
+                  "HS_AppData.ServiceWatchdogFlag == HS_State_DISABLED");
 }
 
 void HS_MonitorEvent_Test_ProcErrorNoReset(void)
@@ -999,7 +998,7 @@ void HS_MonitorEvent_Test_ProcErrorNoReset(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_PROC_RESET;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_PROC_RESET;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
     HS_AppData.CDSData.MaxResets        = 10;
     HS_AppData.CDSData.ResetsPerformed  = 11;
@@ -1057,7 +1056,7 @@ void HS_MonitorEvent_Test_AppRestartErrors(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_APP_RESTART;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_APP_RESTART;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1114,7 +1113,7 @@ void HS_MonitorEvent_Test_OnlySecondAppRestartError(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_APP_RESTART;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_APP_RESTART;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1163,7 +1162,7 @@ void HS_MonitorEvent_Test_NoSecondAppRestartError(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_APP_RESTART;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_APP_RESTART;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1214,7 +1213,7 @@ void HS_MonitorEvent_Test_DeleteErrors(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_APP_DELETE;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_APP_DELETE;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1271,7 +1270,7 @@ void HS_MonitorEvent_Test_OnlySecondDeleteError(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_APP_DELETE;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_APP_DELETE;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1320,7 +1319,7 @@ void HS_MonitorEvent_Test_NoSecondDeleteError(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_APP_DELETE;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_APP_DELETE;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1369,7 +1368,7 @@ void HS_MonitorEvent_Test_MsgActsError(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1378,9 +1377,9 @@ void HS_MonitorEvent_Test_MsgActsError(void)
     /* Set CFE_ES_DeleteApp to return -1, in order to generate error message HS_EVENTMON_NOT_DELETED_ERR_EID */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_DeleteApp), 1, -1);
 
-    HS_AppData.MsgActsState              = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState              = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[0]         = 0;
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_ENABLED;
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_ENABLED;
     HS_AppData.MATablePtr[0].Cooldown    = 5;
 
     /* Execute the function being tested */
@@ -1421,7 +1420,7 @@ void HS_MonitorEvent_Test_MsgActsErrorNoEvent(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1430,11 +1429,11 @@ void HS_MonitorEvent_Test_MsgActsErrorNoEvent(void)
     /* Set CFE_ES_DeleteApp to return -1, in order to generate error message HS_EVENTMON_NOT_DELETED_ERR_EID */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_DeleteApp), 1, -1);
 
-    HS_AppData.MsgActsState      = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState      = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[0] = 0;
 
     /* take branch to avoid HS_EVENTMON_MSGACTS_ERR_EID event error */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_NOEVENT;
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_NOEVENT;
 
     HS_AppData.MATablePtr[0].Cooldown = 5;
 
@@ -1464,7 +1463,7 @@ void HS_MonitorEvent_Test_MsgActsDefaultDisabled(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1473,7 +1472,7 @@ void HS_MonitorEvent_Test_MsgActsDefaultDisabled(void)
     /* Set CFE_ES_DeleteApp to return -1, in order to generate error message HS_EVENTMON_NOT_DELETED_ERR_EID */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_DeleteApp), 1, -1);
 
-    HS_AppData.MsgActsState      = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState      = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[0] = 0;
 
     /* Execute the function being tested */
@@ -1503,7 +1502,7 @@ void HS_MonitorEvent_Test_MsgActsDefaultGreaterLastNonMsg(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
@@ -1512,7 +1511,7 @@ void HS_MonitorEvent_Test_MsgActsDefaultGreaterLastNonMsg(void)
     /* Set CFE_ES_DeleteApp to return -1, in order to generate error message HS_EVENTMON_NOT_DELETED_ERR_EID */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_DeleteApp), 1, -1);
 
-    HS_AppData.MsgActsState      = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState      = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[0] = 0;
 
     /* Execute the function being tested */
@@ -1542,13 +1541,13 @@ void HS_MonitorEvent_Test_MsgActsDefaultLessMaxActTypes(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
     strncpy(Packet.Payload.PacketID.AppName, "AppName", 10);
 
-    HS_AppData.MsgActsState      = HS_STATE_DISABLED;
+    HS_AppData.MsgActsState      = HS_State_DISABLED;
     HS_AppData.MsgActCooldown[0] = 1;
 
     /* Execute the function being tested */
@@ -1577,15 +1576,15 @@ void HS_MonitorEvent_Test_MsgActsDefaultMaxActTypes(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType            = HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES;
+    HS_AppData.EMTablePtr[0].ActionType            = HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES;
     HS_AppData.EMTablePtr[0].EventID               = Packet.Payload.PacketID.EventID;
-    MsgActIndex                                    = HS_AppData.EMTablePtr[0].ActionType - HS_EMT_ACT_LAST_NONMSG - 1;
-    HS_AppData.MATablePtr[MsgActIndex].EnableState = HS_MAT_STATE_ENABLED;
+    MsgActIndex                                    = HS_AppData.EMTablePtr[0].ActionType - HS_EMTActType_LAST_NONMSG - 1;
+    HS_AppData.MATablePtr[MsgActIndex].EnableState = HS_MATState_ENABLED;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
     strncpy(Packet.Payload.PacketID.AppName, "AppName", 10);
 
-    HS_AppData.MsgActsState                = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState                = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[MsgActIndex] = 0;
 
     /* Execute the function being tested */
@@ -1616,17 +1615,17 @@ void HS_MonitorEvent_Test_MsgActsCoolDown(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
     strncpy(Packet.Payload.PacketID.AppName, "AppName", 10);
 
-    HS_AppData.MsgActsState      = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState      = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[0] = 1;
 
     /* take branch to avoid "Send the message if off cooldown and not disabled" */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_NOEVENT;
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_NOEVENT;
 
     HS_AppData.MATablePtr[0].Cooldown = 5;
 
@@ -1657,17 +1656,17 @@ void HS_MonitorEvent_Test_MsgActsMATDisabled(void)
     HS_AppData.EMTablePtr = EMTable;
     HS_AppData.MATablePtr = MATable;
 
-    HS_AppData.EMTablePtr[0].ActionType = HS_EMT_ACT_LAST_NONMSG + 1;
+    HS_AppData.EMTablePtr[0].ActionType = HS_EMTActType_LAST_NONMSG + 1;
     HS_AppData.EMTablePtr[0].EventID    = Packet.Payload.PacketID.EventID;
 
     strncpy(HS_AppData.EMTablePtr[0].AppName, "AppName", 10);
     strncpy(Packet.Payload.PacketID.AppName, "AppName", 10);
 
-    HS_AppData.MsgActsState      = HS_STATE_ENABLED;
+    HS_AppData.MsgActsState      = HS_State_ENABLED;
     HS_AppData.MsgActCooldown[0] = 0;
 
     /* take branch to avoid "Send the message if off cooldown and not disabled" */
-    HS_AppData.MATablePtr[0].EnableState = HS_MAT_STATE_DISABLED;
+    HS_AppData.MATablePtr[0].EnableState = HS_MATState_DISABLED;
 
     HS_AppData.MATablePtr[0].Cooldown = 5;
 
@@ -1712,7 +1711,7 @@ void HS_MonitorUtilization_Test_CurrentUtilLessThanZero(void)
 
 void HS_MonitorUtilization_Test_CPUHogging(void)
 {
-    HS_AppData.CurrentCPUHogState    = HS_STATE_ENABLED;
+    HS_AppData.CurrentCPUHogState    = HS_State_ENABLED;
     HS_AppData.MaxCPUHoggingTime     = 1;
     HS_AppData.CurrentCPUHoggingTime = 0;
     HS_AppData.CurrentCPUUtilIndex   = HS_UTIL_PEAK_NUM_INTERVAL - 1;
@@ -1742,7 +1741,7 @@ void HS_MonitorUtilization_Test_CPUHogging(void)
 
 void HS_MonitorUtilization_Test_CPUHoggingNotMax(void)
 {
-    HS_AppData.CurrentCPUHogState = HS_STATE_ENABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_ENABLED;
     HS_AppData.MaxCPUHoggingTime  = 2;
 
     HS_AppData.CurrentCPUUtilIndex = HS_UTIL_PEAK_NUM_INTERVAL - 1;
@@ -1764,7 +1763,7 @@ void HS_MonitorUtilization_Test_CPUHoggingNotMax(void)
 
 void HS_MonitorUtilization_Test_CurrentCPUHogStateDisabled(void)
 {
-    HS_AppData.CurrentCPUHogState = HS_STATE_DISABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_DISABLED;
     HS_AppData.MaxCPUHoggingTime  = 1;
 
     HS_AppData.CurrentCPUUtilIndex = HS_UTIL_PEAK_NUM_INTERVAL - 1;
@@ -1786,7 +1785,7 @@ void HS_MonitorUtilization_Test_CurrentCPUHogStateDisabled(void)
 
 void HS_MonitorUtilization_Test_HighUtilIndex(void)
 {
-    HS_AppData.CurrentCPUHogState = HS_STATE_DISABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_DISABLED;
     HS_AppData.MaxCPUHoggingTime  = 1;
 
     HS_AppData.CurrentCPUUtilIndex = HS_UTIL_PEAK_NUM_INTERVAL - 1;
@@ -1809,7 +1808,7 @@ void HS_MonitorUtilization_Test_HighUtilIndex(void)
 
 void HS_MonitorUtilization_Test_LowUtilIndex(void)
 {
-    HS_AppData.CurrentCPUHogState = HS_STATE_DISABLED;
+    HS_AppData.CurrentCPUHogState = HS_State_DISABLED;
     HS_AppData.MaxCPUHoggingTime  = 1;
 
     HS_AppData.CurrentCPUUtilIndex = 1;
@@ -1856,7 +1855,7 @@ void HS_ValidateAMTable_Test_UnusedTableEntryCycleCountZero(void)
     Result = HS_ValidateAMTable(HS_AppData.AMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -1888,7 +1887,7 @@ void HS_ValidateAMTable_Test_UnusedTableEntryActionTypeNOACT(void)
 
     for (i = 0; i < HS_MAX_MONITORED_APPS; i++)
     {
-        HS_AppData.AMTablePtr[i].ActionType = HS_AMT_ACT_NOACT;
+        HS_AppData.AMTablePtr[i].ActionType = HS_AMTActType_NOACT;
         HS_AppData.AMTablePtr[i].CycleCount = 1;
         HS_AppData.AMTablePtr[i].NullTerm   = 0;
     }
@@ -1897,7 +1896,7 @@ void HS_ValidateAMTable_Test_UnusedTableEntryActionTypeNOACT(void)
     Result = HS_ValidateAMTable(HS_AppData.AMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -1942,7 +1941,7 @@ void HS_ValidateAMTable_Test_BufferNotNull(void)
     Result = HS_ValidateAMTable(HS_AppData.AMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -1950,7 +1949,7 @@ void HS_ValidateAMTable_Test_BufferNotNull(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_AMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_AMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -1958,7 +1957,7 @@ void HS_ValidateAMTable_Test_BufferNotNull(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_AMTVAL_ERR_NUL, "Result == HS_AMTVAL_ERR_NUL");
+    UtAssert_True(Result == HS_AMTVal_ERR_NUL, "Result == HS_AMTVal_ERR_NUL");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -1984,7 +1983,7 @@ void HS_ValidateAMTable_Test_ActionTypeNotValid(void)
 
     for (i = 0; i < HS_MAX_MONITORED_APPS; i++)
     {
-        HS_AppData.AMTablePtr[i].ActionType = HS_AMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
+        HS_AppData.AMTablePtr[i].ActionType = HS_AMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
         HS_AppData.AMTablePtr[i].CycleCount = 1;
         HS_AppData.AMTablePtr[i].NullTerm   = 0;
     }
@@ -1995,7 +1994,7 @@ void HS_ValidateAMTable_Test_ActionTypeNotValid(void)
     Result = HS_ValidateAMTable(HS_AppData.AMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2003,7 +2002,7 @@ void HS_ValidateAMTable_Test_ActionTypeNotValid(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_AMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_AMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2011,7 +2010,7 @@ void HS_ValidateAMTable_Test_ActionTypeNotValid(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_AMTVAL_ERR_ACT, "Result == HS_AMTVAL_ERR_ACT");
+    UtAssert_True(Result == HS_AMTVal_ERR_ACT, "Result == HS_AMTVal_ERR_ACT");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2035,7 +2034,7 @@ void HS_ValidateAMTable_Test_EntryGood(void)
 
     for (i = 0; i < HS_MAX_MONITORED_APPS; i++)
     {
-        HS_AppData.AMTablePtr[i].ActionType = HS_AMT_ACT_LAST_NONMSG;
+        HS_AppData.AMTablePtr[i].ActionType = HS_AMTActType_LAST_NONMSG;
         HS_AppData.AMTablePtr[i].CycleCount = 1;
         HS_AppData.AMTablePtr[i].NullTerm   = 0;
     }
@@ -2048,7 +2047,7 @@ void HS_ValidateAMTable_Test_EntryGood(void)
     Result = HS_ValidateAMTable(HS_AppData.AMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_AMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2107,7 +2106,7 @@ void HS_ValidateEMTable_Test_UnusedTableEntryEventIDZero(void)
     Result = HS_ValidateEMTable(HS_AppData.EMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2139,7 +2138,7 @@ void HS_ValidateEMTable_Test_UnusedTableEntryActionTypeNOACT(void)
 
     for (i = 0; i < HS_MAX_MONITORED_EVENTS; i++)
     {
-        HS_AppData.EMTablePtr[i].ActionType = HS_EMT_ACT_NOACT;
+        HS_AppData.EMTablePtr[i].ActionType = HS_EMTActType_NOACT;
         HS_AppData.EMTablePtr[i].EventID    = 1;
         HS_AppData.EMTablePtr[i].NullTerm   = 0;
     }
@@ -2148,7 +2147,7 @@ void HS_ValidateEMTable_Test_UnusedTableEntryActionTypeNOACT(void)
     Result = HS_ValidateEMTable(HS_AppData.EMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2193,7 +2192,7 @@ void HS_ValidateEMTable_Test_BufferNotNull(void)
     Result = HS_ValidateEMTable(HS_AppData.EMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2201,7 +2200,7 @@ void HS_ValidateEMTable_Test_BufferNotNull(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_EMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_EMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2209,7 +2208,7 @@ void HS_ValidateEMTable_Test_BufferNotNull(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_EMTVAL_ERR_NUL, "Result == HS_EMTVAL_ERR_NUL");
+    UtAssert_True(Result == HS_EMTVal_ERR_NUL, "Result == HS_EMTVal_ERR_NUL");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2235,7 +2234,7 @@ void HS_ValidateEMTable_Test_ActionTypeNotValid(void)
 
     for (i = 0; i < HS_MAX_MONITORED_EVENTS; i++)
     {
-        HS_AppData.EMTablePtr[i].ActionType = HS_EMT_ACT_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
+        HS_AppData.EMTablePtr[i].ActionType = HS_EMTActType_LAST_NONMSG + HS_MAX_MSG_ACT_TYPES + 1;
         HS_AppData.EMTablePtr[i].EventID    = 1;
         HS_AppData.EMTablePtr[i].NullTerm   = 0;
     }
@@ -2246,7 +2245,7 @@ void HS_ValidateEMTable_Test_ActionTypeNotValid(void)
     Result = HS_ValidateEMTable(HS_AppData.EMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2254,7 +2253,7 @@ void HS_ValidateEMTable_Test_ActionTypeNotValid(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_EMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_EMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2262,7 +2261,7 @@ void HS_ValidateEMTable_Test_ActionTypeNotValid(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_AMTVAL_ERR_ACT, "Result == HS_AMTVAL_ERR_ACT");
+    UtAssert_True(Result == HS_AMTVal_ERR_ACT, "Result == HS_AMTVal_ERR_ACT");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2286,7 +2285,7 @@ void HS_ValidateEMTable_Test_EntryGood(void)
 
     for (i = 0; i < HS_MAX_MONITORED_EVENTS; i++)
     {
-        HS_AppData.EMTablePtr[i].ActionType = HS_EMT_ACT_LAST_NONMSG;
+        HS_AppData.EMTablePtr[i].ActionType = HS_EMTActType_LAST_NONMSG;
         HS_AppData.EMTablePtr[i].EventID    = 1;
         HS_AppData.EMTablePtr[i].NullTerm   = 0;
     }
@@ -2299,7 +2298,7 @@ void HS_ValidateEMTable_Test_EntryGood(void)
     Result = HS_ValidateEMTable(HS_AppData.EMTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_EMTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2359,7 +2358,7 @@ void HS_ValidateXCTable_Test_UnusedTableEntry(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        HS_AppData.XCTablePtr[i].ResourceType = HS_XCT_TYPE_NOTYPE;
+        HS_AppData.XCTablePtr[i].ResourceType = HS_XCTResType_NOTYPE;
         HS_AppData.XCTablePtr[i].NullTerm     = 0;
     }
 
@@ -2367,7 +2366,7 @@ void HS_ValidateXCTable_Test_UnusedTableEntry(void)
     Result = HS_ValidateXCTable(HS_AppData.XCTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2411,7 +2410,7 @@ void HS_ValidateXCTable_Test_BufferNotNull(void)
     Result = HS_ValidateXCTable(HS_AppData.XCTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2419,7 +2418,7 @@ void HS_ValidateXCTable_Test_BufferNotNull(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_XCTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_XCTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2427,7 +2426,7 @@ void HS_ValidateXCTable_Test_BufferNotNull(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_XCTVAL_ERR_NUL, "Result == HS_XCTVAL_ERR_NUL");
+    UtAssert_True(Result == HS_XCTVal_ERR_NUL, "Result == HS_XCTVal_ERR_NUL");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2458,10 +2457,10 @@ void HS_ValidateXCTable_Test_ResourceTypeNotValid(void)
     }
 
     /* take all branches for "Resource Type is not valid" */
-    HS_AppData.XCTablePtr[0].ResourceType = HS_XCT_TYPE_APP_MAIN;
-    HS_AppData.XCTablePtr[1].ResourceType = HS_XCT_TYPE_APP_CHILD;
-    HS_AppData.XCTablePtr[2].ResourceType = HS_XCT_TYPE_DEVICE;
-    HS_AppData.XCTablePtr[3].ResourceType = HS_XCT_TYPE_ISR;
+    HS_AppData.XCTablePtr[0].ResourceType = HS_XCTResType_APP_MAIN;
+    HS_AppData.XCTablePtr[1].ResourceType = HS_XCTResType_APP_CHILD;
+    HS_AppData.XCTablePtr[2].ResourceType = HS_XCTResType_DEVICE;
+    HS_AppData.XCTablePtr[3].ResourceType = HS_XCTResType_ISR;
 
     strncpy(HS_AppData.XCTablePtr[0].ResourceName, "ResourceName", OS_MAX_API_NAME);
 
@@ -2469,7 +2468,7 @@ void HS_ValidateXCTable_Test_ResourceTypeNotValid(void)
     Result = HS_ValidateXCTable(HS_AppData.XCTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2477,7 +2476,7 @@ void HS_ValidateXCTable_Test_ResourceTypeNotValid(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_XCTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_XCTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2485,7 +2484,7 @@ void HS_ValidateXCTable_Test_ResourceTypeNotValid(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_XCTVAL_ERR_TYPE, "Result == HS_XCTVAL_ERR_TYPE");
+    UtAssert_True(Result == HS_XCTVal_ERR_TYPE, "Result == HS_XCTVal_ERR_TYPE");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2509,7 +2508,7 @@ void HS_ValidateXCTable_Test_EntryGood(void)
 
     for (i = 0; i < HS_MAX_EXEC_CNT_SLOTS; i++)
     {
-        HS_AppData.XCTablePtr[i].ResourceType = HS_XCT_TYPE_APP_MAIN;
+        HS_AppData.XCTablePtr[i].ResourceType = HS_XCTResType_APP_MAIN;
         HS_AppData.XCTablePtr[i].NullTerm     = 0;
     }
 
@@ -2517,7 +2516,7 @@ void HS_ValidateXCTable_Test_EntryGood(void)
     Result = HS_ValidateXCTable(HS_AppData.XCTablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_XCTVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2582,20 +2581,20 @@ void HS_ValidateMATable_Test_UnusedTableEntry(void)
 
     for (i = 0; i < HS_MAX_MSG_ACT_TYPES; i++)
     {
-        HS_AppData.MATablePtr[i].EnableState = HS_MAT_STATE_DISABLED;
+        HS_AppData.MATablePtr[i].EnableState = HS_MATState_DISABLED;
 
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     }
 
     /* take secondary branch for "Enable State is Invalid" */
-    HS_AppData.MATablePtr[1].EnableState = HS_MAT_STATE_NOEVENT;
+    HS_AppData.MATablePtr[1].EnableState = HS_MATState_NOEVENT;
 
     /* Execute the function being tested */
     Result = HS_ValidateMATable(HS_AppData.MATablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2644,7 +2643,7 @@ void HS_ValidateMATable_Test_InvalidEnableState(void)
     Result = HS_ValidateMATable(HS_AppData.MATablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2652,7 +2651,7 @@ void HS_ValidateMATable_Test_InvalidEnableState(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_MATVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_MATVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2660,7 +2659,7 @@ void HS_ValidateMATable_Test_InvalidEnableState(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_MATVAL_ERR_ENA, "Result == HS_MATVAL_ERR_ENA");
+    UtAssert_True(Result == HS_MATVal_ERR_ENA, "Result == HS_MATVal_ERR_ENA");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2691,7 +2690,7 @@ void HS_ValidateMATable_Test_MessageIDTooHigh(void)
 
     for (i = 0; i < HS_MAX_MSG_ACT_TYPES; i++)
     {
-        HS_AppData.MATablePtr[i].EnableState = HS_MAT_STATE_ENABLED;
+        HS_AppData.MATablePtr[i].EnableState = HS_MATState_ENABLED;
 
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
@@ -2701,7 +2700,7 @@ void HS_ValidateMATable_Test_MessageIDTooHigh(void)
     Result = HS_ValidateMATable(HS_AppData.MATablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2709,7 +2708,7 @@ void HS_ValidateMATable_Test_MessageIDTooHigh(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_MATVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_MATVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2717,7 +2716,7 @@ void HS_ValidateMATable_Test_MessageIDTooHigh(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_MATVAL_ERR_ID, "Result == HS_MATVAL_ERR_ID");
+    UtAssert_True(Result == HS_MATVal_ERR_ID, "Result == HS_MATVal_ERR_ID");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2748,7 +2747,7 @@ void HS_ValidateMATable_Test_LengthTooHigh(void)
 
     for (i = 0; i < HS_MAX_MSG_ACT_TYPES; i++)
     {
-        HS_AppData.MATablePtr[i].EnableState = HS_MAT_STATE_ENABLED;
+        HS_AppData.MATablePtr[i].EnableState = HS_MATState_ENABLED;
 
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
@@ -2758,7 +2757,7 @@ void HS_ValidateMATable_Test_LengthTooHigh(void)
     Result = HS_ValidateMATable(HS_AppData.MATablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVAL_ERR_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVal_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
 
     strCmpResult =
@@ -2766,7 +2765,7 @@ void HS_ValidateMATable_Test_LengthTooHigh(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[0].Spec);
 
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_MATVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventID, HS_MATVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2774,7 +2773,7 @@ void HS_ValidateMATable_Test_LengthTooHigh(void)
 
     UtAssert_True(strCmpResult == 0, "Event string matched expected result, '%s'", context_CFE_EVS_SendEvent[1].Spec);
 
-    UtAssert_True(Result == HS_MATVAL_ERR_LEN, "Result == HS_MATVAL_ERR_LEN");
+    UtAssert_True(Result == HS_MATVal_ERR_LEN, "Result == HS_MATVal_ERR_LEN");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
     UtAssert_True(call_count_CFE_EVS_SendEvent == 2, "CFE_EVS_SendEvent was called %u time(s), expected 2",
@@ -2803,7 +2802,7 @@ void HS_ValidateMATable_Test_EntryGood(void)
 
     for (i = 0; i < HS_MAX_MSG_ACT_TYPES; i++)
     {
-        HS_AppData.MATablePtr[i].EnableState = HS_MAT_STATE_ENABLED;
+        HS_AppData.MATablePtr[i].EnableState = HS_MATState_ENABLED;
 
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
         UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
@@ -2813,7 +2812,7 @@ void HS_ValidateMATable_Test_EntryGood(void)
     Result = HS_ValidateMATable(HS_AppData.MATablePtr);
 
     /* Verify results */
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVAL_INF_EID);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, HS_MATVal_INF_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
     strCmpResult =
@@ -2861,7 +2860,7 @@ void HS_SetCDSData_Test(void)
     uint16 ResetsPerformed = 1;
     uint16 MaxResets       = 2;
 
-    HS_AppData.CDSState = HS_STATE_ENABLED;
+    HS_AppData.CDSState = HS_State_ENABLED;
 
     /* Execute the function being tested */
     HS_SetCDSData(ResetsPerformed, MaxResets);

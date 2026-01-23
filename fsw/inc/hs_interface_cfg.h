@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-19,200-1, and identified as "cFS Draco"
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2023 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -19,12 +18,8 @@
 
 /**
  * @file
- *   CFS Health and Safety (HS) Application Public Definitions
  *
- * This provides default values for configurable items that affect
- * the interface(s) of this module.  This includes the CMD/TLM message
- * interface, tables definitions, and any other data products that
- * serve to exchange information with other entities.
+ * CFS Health and Safety (HS) Application Mission Configuration Header File
  *
  * @note This file may be overridden/superceded by mission-provided definitions
  * either by overriding this header or by generating definitions from a command/data
@@ -32,6 +27,8 @@
  */
 #ifndef HS_INTERFACE_CFG_H
 #define HS_INTERFACE_CFG_H
+
+#include "hs_interface_cfg_values.h"
 
 /**
  * \defgroup cfshsplatformcfg CFS Health and Safety Platform Configuration
@@ -58,7 +55,8 @@
  *       cFE size limit for a single buffered table set by the
  *       #CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE parameter
  */
-#define HS_MAX_EXEC_CNT_SLOTS 32
+#define HS_MAX_EXEC_CNT_SLOTS         HS_INTERFACE_CFGVAL(MAX_EXEC_CNT_SLOTS)
+#define DEFAULT_HS_MAX_EXEC_CNT_SLOTS 32
 
 /**
  * \brief Maximum message action types
@@ -81,7 +79,8 @@
  *       cFE size limit for a single buffered table set by the
  *       #CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE parameter
  */
-#define HS_MAX_MSG_ACT_TYPES 8
+ #define HS_MAX_MSG_ACT_TYPES         HS_INTERFACE_CFGVAL(MAX_MSG_ACT_TYPES)
+ #define DEFAULT_HS_MAX_MSG_ACT_TYPES 8
 
 /**
  * \brief Maximum message action size (in bytes)
@@ -104,7 +103,8 @@
  *       cFE size limit for a single buffered table set by the
  *       #CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE parameter
  */
-#define HS_MAX_MSG_ACT_SIZE 16
+ #define HS_MAX_MSG_ACT_SIZE         HS_INTERFACE_CFGVAL(MAX_MSG_ACT_SIZE)
+ #define DEFAULT_HS_MAX_MSG_ACT_SIZE 16
 
 /**
  * \brief Maximum number of monitored applications
@@ -128,7 +128,8 @@
  *       cFE size limit for a single buffered table set by the
  *       #CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE parameter
  */
-#define HS_MAX_MONITORED_APPS 32
+ #define HS_MAX_MONITORED_APPS         HS_INTERFACE_CFGVAL(MAX_MONITORED_APPS)
+ #define DEFAULT_HS_MAX_MONITORED_APPS 32
 
 /**
  * \brief Maximum number of monitored events
@@ -152,7 +153,8 @@
  *       cFE size limit for a single buffered table set by the
  *       #CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE parameter
  */
-#define HS_MAX_MONITORED_EVENTS 16
+ #define HS_MAX_MONITORED_EVENTS         HS_INTERFACE_CFGVAL(MAX_MONITORED_EVENTS)
+ #define DEFAULT_HS_MAX_MONITORED_EVENTS 16
 
 /**\}*/
 
